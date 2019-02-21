@@ -1,0 +1,7 @@
+{
+    "require": {
+        "caseyamcl/phpoaipmh": "~2.0",
+        "guzzlehttp/guzzle": "~6.0",
+        "scriptotek/marc": "~2.0"
+    }
+}
