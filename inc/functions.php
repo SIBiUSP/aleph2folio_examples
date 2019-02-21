@@ -60,23 +60,28 @@ function fixes($marc)
     //print_r($marc);
     $body = [];
 
+    
+
     if (isset($marc["record"]["001"])) {
-    	$body["id"] = $marc["record"]["001"]["content"];
+        $body["id"] = $marc["record"]["001"]["content"];
+        $body["hrid"] = $marc["record"]["001"]["content"];
     }
+
+    $body["source"] = "SOURCE";
 
     if (isset($marc["record"]["008"])) {
         $language_correct = decode::language(substr($marc["record"]["008"]["content"], 35, 3));
-        $body["language"][] = $language_correct;
+        $body["languages"][] = $language_correct;
     }    
 
     if (isset($marc["record"]["020"]["a"])) {
-        $body["identifier"]["value"] = $marc["record"]["020"]["a"][0];
-        $body["identifier"]["type"] = "ISBN";
+        $body["identifiers"]["value"] = $marc["record"]["020"]["a"][0];
+        $body["identifiers"]["identifierTypeId"] = "ISBN";
     }
 
     if (isset($marc["record"]["024"]["a"])) {
-        $body["identifier"]["value"] = $marc["record"]["024"]["a"][0];
-        $body["identifier"]["type"] = "DOI";
+        $body["identifiers"]["value"] = $marc["record"]["024"]["a"][0];
+        $body["identifiers"]["identifierTypeId"] = "DOI";
     }
 
     //if (isset($marc["record"]["044"])) {
@@ -91,25 +96,24 @@ function fixes($marc)
             //if (!empty($person["0"])) {
             //    $author["person"]["orcid"] = $person["0"];
             //}               
-            //if (!empty($person["4"])) {
-            //    $potentialAction_correct = decode::potentialAction($person["4"]);
-            //    $author["person"]["potentialAction"] = $potentialAction_correct;
-            //}
+            if (!empty($person["4"])) {
+                $author["contributorNameTypeId"] = $person["4"];
+            }
             //if (!empty($person["d"])) {
             //    $author["person"]["date"] = $person["d"];
             //}
         }
 
-        $body["contributor"][] = $author;
+        $body["contributors"][] = $author;
         unset($person);
         unset($author);
     }
 
     if (isset($marc["record"]["242"])) {
         if (isset($marc["record"]["242"]["b"][0])) {
-            $body["altTitle"][] = $marc["record"]["242"]["a"][0] . ": " . $marc["record"]["242"]["b"][0];
+            $body["alternativeTitles"][] = $marc["record"]["242"]["a"][0] . ": " . $marc["record"]["242"]["b"][0];
         } else {
-            $body["altTitle"][] = $marc["record"]["242"]["a"][0];
+            $body["alternativeTitles"][] = $marc["record"]["242"]["a"][0];
         }
     }
 
@@ -124,29 +128,28 @@ function fixes($marc)
 
     if (isset($marc["record"]["246"])) {
         if (isset($marc["record"]["246"]["b"][0])) {
-            $body["altTitle"][] = $marc["record"]["246"]["a"][0] . ": " . $marc["record"]["246"]["b"][0];
+            $body["indexTitle"] = $marc["record"]["246"]["a"][0] . ": " . $marc["record"]["246"]["b"][0];
         } else {
-            $body["altTitle"][] = $marc["record"]["246"]["a"][0];
+            $body["indexTitle"] = $marc["record"]["246"]["a"][0];
         }
     }
 
     if (isset($marc["record"]["260"])) {
         if (isset($marc["record"]["260"]["b"])) {
-            $body["publisher"] = $marc["record"]["260"]["b"][0];
+            $body["publication"]["publisher"] = $marc["record"]["260"]["b"][0];
         }
-        //if (isset($marc["record"]["260"]["a"])) {
-        //    $body["publication"]["place"] = $marc["record"]["260"]["a"][0];
-        //}
+        if (isset($marc["record"]["260"]["a"])) {
+            $body["publication"]["place"] = $marc["record"]["260"]["a"][0];
+        }
         if (isset($marc["record"]["260"]["c"])) {
-            $body["date"] = $marc["record"]["260"]["c"][0];
+            $body["publication"]["dateOfPublication"] = $marc["record"]["260"]["c"][0];
         }        
     }
 
     if (isset($marc["record"]["650"])) {
         foreach (($marc["record"]["650"]) as $subject) {
             if (isset($subject["a"])) {
-                $body["subject"]["name"] = $subject["a"];
-                $body["subject"]["type"] = $subject["2"];
+                $body["subjects"]["name"] = $subject["a"];
             }
         }
     }
@@ -158,16 +161,15 @@ function fixes($marc)
             //if (!empty($person["0"])) {
             //    $author["person"]["orcid"] = $person["0"];
             //}               
-            //if (!empty($person["4"])) {
-            //    $potentialAction_correct = decode::potentialAction($person["4"]);
-            //    $author["person"]["potentialAction"] = $potentialAction_correct;
-            //}
+            if (!empty($person["4"])) {
+                $author["contributorNameTypeId"] = $person["4"];
+            }
             //if (!empty($person["d"])) {
             //    $author["person"]["date"] = $person["d"];
             //}
         }
 
-        $body["contributor"][] = $author;
+        $body["contributors"][] = $author;
         unset($person);
         unset($author);
     }
