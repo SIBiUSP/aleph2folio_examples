@@ -17,4 +17,6 @@ sudo pear install File_MARC
 
 // FOLIO Codex Model 
 
+https://s3.amazonaws.com/foliodocs/api/mod-inventory/inventory.html#inventory_instances_post
+
 https://github.com/folio-org/raml/blob/raml1.0/schemas/codex/instance.json
