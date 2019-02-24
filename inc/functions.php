@@ -1,5 +1,27 @@
 <?php
 
+function gen_uuid() {
+    return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        // 32 bits for "time_low"
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+
+        // 16 bits for "time_mid"
+        mt_rand( 0, 0xffff ),
+
+        // 16 bits for "time_hi_and_version",
+        // four most significant bits holds version number 4
+        mt_rand( 0, 0x0fff ) | 0x4000,
+
+        // 16 bits, 8 bits for "clk_seq_hi_res",
+        // 8 bits for "clk_seq_low",
+        // two most significant bits holds zero and one for variant DCE1.1
+        mt_rand( 0, 0x3fff ) | 0x8000,
+
+        // 48 bits for "node"
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+    );
+}
+
 /*
 * Converte Alephseq em JSON *
 */
@@ -63,26 +85,28 @@ function fixes($marc)
     
 
     if (isset($marc["record"]["001"])) {
-        $body["id"] = $marc["record"]["001"]["content"];
+
+        $body["id"] = gen_uuid();
         $body["hrid"] = $marc["record"]["001"]["content"];
     }
 
-    $body["source"] = "SOURCE";
+    $body["source"] = "DEDALUS";
 
-    if (isset($marc["record"]["008"])) {
-        $language_correct = decode::language(substr($marc["record"]["008"]["content"], 35, 3));
-        $body["languages"][] = $language_correct;
-    }    
+    $body["instanceTypeId"] = "txt";
 
-    if (isset($marc["record"]["020"]["a"])) {
-        $body["identifiers"]["value"] = $marc["record"]["020"]["a"][0];
-        $body["identifiers"]["identifierTypeId"] = "ISBN";
-    }
+    // if (isset($marc["record"]["008"])) {
+    //     $body["languages"][] = substr($marc["record"]["008"]["content"], 35, 3);
+    // }    
 
-    if (isset($marc["record"]["024"]["a"])) {
-        $body["identifiers"]["value"] = $marc["record"]["024"]["a"][0];
-        $body["identifiers"]["identifierTypeId"] = "DOI";
-    }
+    // if (isset($marc["record"]["020"]["a"])) {
+    //     $body["identifiers"]["value"] = $marc["record"]["020"]["a"][0];
+    //     $body["identifiers"]["identifierTypeId"] = "ISBN";
+    // }
+
+    // if (isset($marc["record"]["024"]["a"])) {
+    //     $body["identifiers"]["value"] = $marc["record"]["024"]["a"][0];
+    //     $body["identifiers"]["identifierTypeId"] = "DOI";
+    // }
 
     //if (isset($marc["record"]["044"])) {
     //    $country_correct = decode::country($marc["record"]["044"]["a"][0]);
@@ -98,6 +122,8 @@ function fixes($marc)
             //}               
             if (!empty($person["4"])) {
                 $author["contributorNameTypeId"] = $person["4"];
+            } else {
+                $author["contributorNameTypeId"] = "aut";
             }
             //if (!empty($person["d"])) {
             //    $author["person"]["date"] = $person["d"];
@@ -109,13 +135,13 @@ function fixes($marc)
         unset($author);
     }
 
-    if (isset($marc["record"]["242"])) {
-        if (isset($marc["record"]["242"]["b"][0])) {
-            $body["alternativeTitles"][] = $marc["record"]["242"]["a"][0] . ": " . $marc["record"]["242"]["b"][0];
-        } else {
-            $body["alternativeTitles"][] = $marc["record"]["242"]["a"][0];
-        }
-    }
+    // if (isset($marc["record"]["242"])) {
+    //     if (isset($marc["record"]["242"]["b"][0])) {
+    //         $body["alternativeTitles"][] = $marc["record"]["242"]["a"][0] . ": " . $marc["record"]["242"]["b"][0];
+    //     } else {
+    //         $body["alternativeTitles"][] = $marc["record"]["242"]["a"][0];
+    //     }
+    // }
 
     if (isset($marc["record"]["245"])) {
         if (isset($marc["record"]["245"]["b"][0])) {
@@ -123,28 +149,27 @@ function fixes($marc)
         } else {
             $body["title"] = $marc["record"]["245"]["a"][0];
         }
-
     }
 
-    if (isset($marc["record"]["246"])) {
-        if (isset($marc["record"]["246"]["b"][0])) {
-            $body["indexTitle"] = $marc["record"]["246"]["a"][0] . ": " . $marc["record"]["246"]["b"][0];
-        } else {
-            $body["indexTitle"] = $marc["record"]["246"]["a"][0];
-        }
-    }
+    // if (isset($marc["record"]["246"])) {
+    //     if (isset($marc["record"]["246"]["b"][0])) {
+    //         $body["indexTitle"] = $marc["record"]["246"]["a"][0] . ": " . $marc["record"]["246"]["b"][0];
+    //     } else {
+    //         $body["indexTitle"] = $marc["record"]["246"]["a"][0];
+    //     }
+    // }
 
-    if (isset($marc["record"]["260"])) {
-        if (isset($marc["record"]["260"]["b"])) {
-            $body["publication"]["publisher"] = $marc["record"]["260"]["b"][0];
-        }
-        if (isset($marc["record"]["260"]["a"])) {
-            $body["publication"]["place"] = $marc["record"]["260"]["a"][0];
-        }
-        if (isset($marc["record"]["260"]["c"])) {
-            $body["publication"]["dateOfPublication"] = $marc["record"]["260"]["c"][0];
-        }        
-    }
+    // if (isset($marc["record"]["260"])) {
+    //     if (isset($marc["record"]["260"]["b"])) {
+    //         $body["publication"]["publisher"] = $marc["record"]["260"]["b"][0];
+    //     }
+    //     if (isset($marc["record"]["260"]["a"])) {
+    //         $body["publication"]["place"] = $marc["record"]["260"]["a"][0];
+    //     }
+    //     if (isset($marc["record"]["260"]["c"])) {
+    //         $body["publication"]["dateOfPublication"] = $marc["record"]["260"]["c"][0];
+    //     }        
+    // }
 
     if (isset($marc["record"]["650"])) {
         foreach (($marc["record"]["650"]) as $subject) {
@@ -163,6 +188,8 @@ function fixes($marc)
             //}               
             if (!empty($person["4"])) {
                 $author["contributorNameTypeId"] = $person["4"];
+            } else {
+                $author["contributorNameTypeId"] = "aut";
             }
             //if (!empty($person["d"])) {
             //    $author["person"]["date"] = $person["d"];
@@ -190,6 +217,8 @@ function oracle_sysno($sysno)
     }
     return $record;
 }
+
+
 
 /*
 * Decodifica dados *
@@ -738,6 +767,134 @@ class decode
         }
     }
 
+}
+
+class FolioREST
+{
+    static function loginREST()
+    {
+
+        $ch = curl_init();
+
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";
+
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/authn/login");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"username\":\"diku_admin\",\"password\":\"admin\"}");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);        
+        $output_parsed = explode(" ", $server_output);
+        return $output_parsed[10];
+        curl_close($ch);
+
+    }
+
+    static function addRecordREST($cookies,$json) {
+        $ch = curl_init();
+
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';        
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";
+
+        
+        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/inventory/instances');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);        
+        print_r($server_output);
+        curl_close($ch);        
+
+    }
+
+    static function deleteRecordsREST($cookies,$id) {
+        $ch = curl_init();
+
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';        
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";
+
+        
+        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/inventory/instances/'.$id.'');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);        
+        print_r($server_output);
+        curl_close($ch);        
+
+    }
+
+    static function deleteAllRecordsREST($cookies) {
+        $ch = curl_init();
+
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';        
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";
+
+        
+        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/inventory/instances');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);        
+        print_r($server_output);
+        curl_close($ch);        
+
+    }    
+    
+    static function deleteItensREST($cookies) {
+        $ch = curl_init();
+
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';        
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: text/plain";
+
+        
+        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/holdings-storage/holdings');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);        
+        print_r($server_output);
+        curl_close($ch);        
+
+    }     
+
+    static function logoutREST($folioCookies)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: $folioCookies"));
+        curl_setopt($ch, CURLOPT_URL, "$folioRest/rest/logout");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        curl_close($ch);
+    }    
 }
 
 ?>

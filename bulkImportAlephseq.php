@@ -3,6 +3,8 @@
 
 require 'inc/functions.php';
 
+$folioCookies = FolioREST::loginREST();
+
 $record = array();
 $sysno_old = '000000000';
 
@@ -22,8 +24,11 @@ while ($line = fgets(STDIN)) {
 
         $body = fixes($marc);
         $jsonOutput = json_encode($body);
-        print_r($jsonOutput);           
+        print_r($jsonOutput);
+
         echo "\n\n";
+
+        FolioREST::addRecordREST($folioCookies, $jsonOutput);        
             
         $marc = [];
         $record = [];
