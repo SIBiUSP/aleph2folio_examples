@@ -98,10 +98,10 @@ function fixes($marc)
     //     $body["languages"][] = substr($marc["record"]["008"]["content"], 35, 3);
     // }    
 
-    // if (isset($marc["record"]["020"]["a"])) {
-    //     $body["identifiers"]["value"] = $marc["record"]["020"]["a"][0];
-    //     $body["identifiers"]["identifierTypeId"] = "ISBN";
-    // }
+    if (isset($marc["record"]["020"]["a"])) {
+        $body["identifiers"][0]["value"] = $marc["record"]["020"]["a"][0];
+         $body["identifiers"][0]["identifierTypeId"] = "8261054f-be78-422d-bd51-4ed9f33c3422";
+    }
 
     // if (isset($marc["record"]["024"]["a"])) {
     //     $body["identifiers"]["value"] = $marc["record"]["024"]["a"][0];
@@ -119,11 +119,12 @@ function fixes($marc)
             $author["name"] = $person["a"];
             //if (!empty($person["0"])) {
             //    $author["person"]["orcid"] = $person["0"];
-            //}               
+            //}
+            $author["contributorNameTypeId"] = "2b94c631-fca9-4892-a730-03ee529ffe2a";          
             if (!empty($person["4"])) {
-                $author["contributorNameTypeId"] = $person["4"];
+                $author["contributorTypeText"] = $person["4"];
             } else {
-                $author["contributorNameTypeId"] = "aut";
+                $author["contributorTypeText"] = "Author";
             }
             //if (!empty($person["d"])) {
             //    $author["person"]["date"] = $person["d"];
@@ -171,13 +172,13 @@ function fixes($marc)
     //     }        
     // }
 
-    if (isset($marc["record"]["650"])) {
-        foreach (($marc["record"]["650"]) as $subject) {
-            if (isset($subject["a"])) {
-                $body["subjects"]["name"] = $subject["a"];
-            }
-        }
-    }
+    // if (isset($marc["record"]["650"])) {
+    //     foreach (($marc["record"]["650"]) as $subject) {
+    //         if (isset($subject["a"])) {
+    //             $body["subjects"]["name"] = $subject["a"];
+    //         }
+    //     }
+    // }
 
     if (isset($marc["record"]["700"])) {
 
@@ -185,11 +186,12 @@ function fixes($marc)
             $author["name"] = $person["a"];
             //if (!empty($person["0"])) {
             //    $author["person"]["orcid"] = $person["0"];
-            //}               
+            //}
+            $author["contributorNameTypeId"] = "2b94c631-fca9-4892-a730-03ee529ffe2a";                           
             if (!empty($person["4"])) {
-                $author["contributorNameTypeId"] = $person["4"];
+                $author["contributorTypeText"] = $person["4"];
             } else {
-                $author["contributorNameTypeId"] = "aut";
+                $author["contributorTypeText"] = "Author";
             }
             //if (!empty($person["d"])) {
             //    $author["person"]["date"] = $person["d"];
@@ -794,6 +796,77 @@ class FolioREST
         curl_close($ch);
 
     }
+
+    static function getContributorNameTypes($cookies)
+    {
+
+        $ch = curl_init();
+
+        $headers = array($cookies);
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.''; 
+        //$headers[] = "Content-type: application/json";
+        //$headers[] = "Accept: application/json";
+
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/contributor-name-types");
+        //curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, "active==\"true\"");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);        
+        print_r($server_output);
+        curl_close($ch);
+
+    }
+
+    static function getInstancesContext($cookies)
+    {
+
+        $ch = curl_init();
+
+        $headers = array($cookies);
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.''; 
+        //$headers[] = "Content-type: application/json";
+        //$headers[] = "Accept: application/json";
+
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/inventory/instances/context");
+        //curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);        
+        print_r($server_output);
+        curl_close($ch);
+
+    }    
+    
+    static function getIdentifierTypes($cookies)
+    {
+
+        $ch = curl_init();
+
+        $headers = array($cookies);
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.''; 
+        //$headers[] = "Content-type: application/json";
+        //$headers[] = "Accept: application/json";
+
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/identifier-types");
+        //curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"name\":\"isbn\"}");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);        
+        print_r($server_output);
+        curl_close($ch);
+
+    }    
 
     static function addRecordREST($cookies,$json) {
         $ch = curl_init();
