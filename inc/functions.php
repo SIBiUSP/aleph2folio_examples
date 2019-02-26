@@ -71,6 +71,53 @@ function AlephseqToFolioCodex($line)
 
 }
 
+
+function AlephseqToMods($line)
+{
+
+    global $marc;
+    global $i;
+    global $id;
+
+    $id = substr($line, 0, 9);
+    $field = substr($line, 10, 3);
+    $ind_1 = substr($line, 13, 1);
+    $ind_2 = substr($line, 14, 1);
+
+
+    $control_fields = array("LDR","DEL","FMT","001","008");
+    $repetitive_fields = array("100","510","536","650","651","655","700","856","946","952","CAT");
+
+    if (in_array($field, $control_fields)) {
+        $marc["record"][$field]["content"] = trim(substr($line, 18));
+
+    } elseif (in_array($field, $repetitive_fields)) {
+        $content = explode("\$", substr($line, 18));
+        foreach ($content as &$content_line) {
+            if (!empty($content_line)) {
+                $marc["record"][$field][$i][substr($content_line, 0, 1)] = trim(substr($content_line, 1));
+            }
+
+
+        }
+
+
+    } else {
+        $content = explode("\$", substr($line, 18));
+        foreach ($content as &$content_line) {
+            if (!empty($content_line)) {
+                $marc["record"][$field][substr($content_line, 0, 1)][] = trim(substr($content_line, 1));
+            }
+        }
+    }
+
+    $marc["record"][$field]["ind_1"] = $ind_1;
+    $marc["record"][$field]["ind_2"] = $ind_2;
+
+    $i++;
+
+}
+
 /*
 * Processa o fixes *
 */
@@ -92,7 +139,7 @@ function fixes($marc)
 
     $body["source"] = "DEDALUS";
 
-    $body["instanceTypeId"] = "txt";
+    $body["instanceTypeId"] = "6312d172-f0cf-40f6-b27d-9fa8feaf332f";
 
     // if (isset($marc["record"]["008"])) {
     //     $body["languages"][] = substr($marc["record"]["008"]["content"], 35, 3);
@@ -204,6 +251,70 @@ function fixes($marc)
     }
 
     return $body;
+    unset($body);
+
+}
+
+/*
+* Processa o fixes *
+*/
+function fixesMods($marc)
+{
+
+    global $i;
+
+    //print_r($marc);
+    $body = [];
+
+    if (isset($marc["record"]["LDR"])) {
+        $body["leader"] = $marc["record"]["LDR"]["content"];
+    } 
+    
+    foreach ($marc["record"] as $key => $value) {
+        $controlFieldsAleph = array("LDR", "BAS", "CAT", "FMT");
+        $controlFields = array("001", "003", "005", "007", "008");
+        if (!in_array($key, $controlFieldsAleph)) {
+            if  (in_array($key, $controlFields)) {
+                $body["fields"][$key] = $value["content"];
+            } else {
+                foreach ($value as $keyField => $valueField) {
+                    switch ($keyField) {
+                        case "ind_1":
+                            if ($valueField != " ") {
+                                $body["fields"][$key]["ind1"] = $valueField[0];
+                            } else {
+                                $body["fields"][$key]["ind1"] = "\\\\";
+                            }                            
+                            break;
+                        case "ind_2":
+                            if ($valueField != " ") {
+                                $body["fields"][$key]["ind2"] = $valueField[0];
+                            } else {
+                                $body["fields"][$key]["ind2"] = "\\\\";
+                            } 
+                            break;
+                        default:
+                            if (count($valueField) < 1) {
+                                $body["fields"][$key]["subfields"][][$keyField] = $valueField;
+                            } else {
+                                foreach ($valueField as $keySubfield => $valueSubfield) {
+                                    if (is_string($keySubfield)) {
+                                        $body["fields"][$key]["subfields"][][$keySubfield] = $valueSubfield;
+                                    } else {
+                                        $body["fields"][$key]["subfields"][][$keyField] = $valueSubfield;
+                                    }
+                                      
+                                }                            
+                            }
+                            break;
+                    }
+                }
+            }
+            
+        }
+    }
+
+    return json_encode($body);
     unset($body);
 
 }
@@ -844,7 +955,7 @@ class FolioREST
 
     }    
     
-    static function getIdentifierTypes($cookies)
+    static function getIdentifierTypes($cookies, $query = null)
     {
 
         $ch = curl_init();
@@ -852,14 +963,12 @@ class FolioREST
         $headers = array($cookies);
         $headers[] = "X-Okapi-Tenant: diku";
         $headers[] = 'X-Okapi-Token: '.$cookies.''; 
-        //$headers[] = "Content-type: application/json";
-        //$headers[] = "Accept: application/json";
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";        
 
-        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/identifier-types");
-        //curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/identifier-types?limit=50$query");
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        //curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"name\":\"isbn\"}");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $server_output = curl_exec($ch);        
@@ -890,6 +999,29 @@ class FolioREST
         curl_close($ch);        
 
     }
+
+    static function addRecordModsREST($cookies,$json) {
+        $ch = curl_init();
+
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';        
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";
+
+        
+        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/inventory/ingest/mods');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);        
+        print_r($server_output);
+        curl_close($ch);        
+
+    }    
 
     static function deleteRecordsREST($cookies,$id) {
         $ch = curl_init();
