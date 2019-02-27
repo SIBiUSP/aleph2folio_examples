@@ -7,16 +7,14 @@ Examples to Convert ALEPHSEQ to JSON
 php bulkImportAlephseq.php < input/41records.seq
 
 
-// Run OAI Client
+// Convert ALEPHSEQ to JSON using Catmandu
 
-curl -s http://getcomposer.org/installer | php
+./catmanduConvertAlephseq2JSON.sh
 
-php composer.phar install --no-dev
+// Convert OAI to JSON using Catmandu
 
-sudo pear install File_MARC
+./catmanduOAItoJSON.sh
 
 // FOLIO Codex Model 
 
 https://s3.amazonaws.com/foliodocs/api/mod-inventory/inventory.html#inventory_instances_post
-
-https://github.com/folio-org/raml/blob/raml1.0/schemas/codex/instance.json
