@@ -125,11 +125,7 @@ function fixes($marc)
 {
 
     global $i;
-
-    //print_r($marc);
-    $body = [];
-
-    
+    $body = [];    
 
     if (isset($marc["record"]["001"])) {
 
@@ -154,11 +150,6 @@ function fixes($marc)
     //     $body["identifiers"]["value"] = $marc["record"]["024"]["a"][0];
     //     $body["identifiers"]["identifierTypeId"] = "DOI";
     // }
-
-    //if (isset($marc["record"]["044"])) {
-    //    $country_correct = decode::country($marc["record"]["044"]["a"][0]);
-    //    $body["doc"]["country"][] = $country_correct;
-    //}
 
     if (isset($marc["record"]["100"])) {
 
@@ -206,6 +197,10 @@ function fixes($marc)
     //         $body["indexTitle"] = $marc["record"]["246"]["a"][0];
     //     }
     // }
+
+    if (isset($marc["record"]["250"]["a"])) {
+        $body["editions"] = $marc["record"]["250"]["a"];        
+    }      
 
     if (isset($marc["record"]["260"])) {
         if (isset($marc["record"]["260"]["b"])) {
