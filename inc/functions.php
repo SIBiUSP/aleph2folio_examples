@@ -998,30 +998,7 @@ class FolioREST
         print_r($server_output);
         curl_close($ch);        
 
-    }
-
-    static function addRecordModsREST($cookies,$json) {
-        $ch = curl_init();
-
-        $headers = array();
-        $headers[] = "X-Okapi-Tenant: diku";
-        $headers[] = 'X-Okapi-Token: '.$cookies.'';        
-        $headers[] = "Content-type: application/json";
-        $headers[] = "Accept: application/json";
-
-        
-        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/inventory/ingest/mods');
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $server_output = curl_exec($ch);        
-        print_r($server_output);
-        curl_close($ch);        
-
-    }    
+    }   
 
     static function deleteRecordsREST($cookies,$id) {
         $ch = curl_init();

@@ -24,10 +24,8 @@ while ($line = fgets(STDIN)) {
 
         $body = fixesMods($marc);
 
-        print_r($body);
-        echo "\n\n";        
-        // Need to send path to json file
-        FolioREST::addRecordModsREST($folioCookies, $jsonOutput);        
+        FolioREST::addRecordREST($folioCookies, $jsonOutput); 
+              
             
         $marc = [];
         $record = [];
