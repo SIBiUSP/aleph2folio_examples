@@ -1,0 +1,16 @@
+move_field('_id', 'hrid');
+add_field('source', 'DEDALUS');
+add_field('instanceTypeId', '6312d172-f0cf-40f6-b27d-9fa8feaf332f');
+marc_map('008_/35-37','languages.$append');
+do marc_each ()
+    if marc_has(020)
+        marc_map('020a','isbn.value')
+        marc_map('020a','isbn.identifierTypeId', -value => '8261054f-be78-422d-bd51-4ed9f33c3422')
+        copy_field(isbn,identifiers.$append)
+    end
+end
+marc_map('245a', 'title');
+marc_map('250a', 'editions');
+marc_map('300a', 'physicalDescriptions');
+marc_map('650a', 'subjects.$append');
+remove_field('record');
