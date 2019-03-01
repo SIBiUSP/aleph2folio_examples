@@ -1,6 +1,13 @@
 # aleph2folio_examples
 Examples to Convert ALEPHSEQ to JSON
 
+// Dependencies
+
+catmandu
+jq
+
+UUID=$(cat /proc/sys/kernel/random/uuid)
+
 
 // Run Bulk Import
 
