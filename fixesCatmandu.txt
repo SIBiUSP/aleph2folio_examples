@@ -2,6 +2,7 @@ move_field('_id', 'hrid');
 add_field('source', 'DEDALUS');
 add_field('instanceTypeId', '6312d172-f0cf-40f6-b27d-9fa8feaf332f');
 marc_map('008_/35-37','languages.$append');
+
 do marc_each ()
     if marc_has(020)
         marc_map('020a','isbn.value')
@@ -9,8 +10,41 @@ do marc_each ()
         copy_field(isbn,identifiers.$append)
     end
 end
+remove_field('isbn');
+
+do marc_each ()
+    if marc_has(100)
+        marc_map('100a','author.name')
+        marc_map('100a','author.contributorNameTypeId', -value => '2b94c631-fca9-4892-a730-03ee529ffe2a')
+        copy_field(author,contributors.$append)
+    end
+end
+remove_field('author');
+
+do marc_each ()
+    if marc_has(700)
+        marc_map('700a','author.name')
+        marc_map('700a','author.contributorNameTypeId', -value => '2b94c631-fca9-4892-a730-03ee529ffe2a')
+        copy_field(author,contributors.$append)
+    end
+end
+remove_field('author');
+
 marc_map('245a', 'title');
 marc_map('250a', 'editions');
+
+do marc_each ()
+    if marc_has(260)
+        marc_map('260b','imprint.publisher')
+        marc_map('260a','imprint.place')
+        marc_map('260c','imprint.dateOfPublication')
+        copy_field(imprint, publication.$append)
+    end
+end
+remove_field('imprint');
+
+
 marc_map('300a', 'physicalDescriptions');
 marc_map('650a', 'subjects.$append');
 remove_field('record');
+
