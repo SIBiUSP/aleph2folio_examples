@@ -23,10 +23,7 @@ while ($line = fgets(STDIN)) {
         }
 
         $body = fixes($marc);
-        $jsonOutput = json_encode($body);
-        print_r($jsonOutput);
-
-        echo "\n\n";
+        $jsonOutput = json_encode($body); 
 
         FolioREST::addRecordREST($folioCookies, $jsonOutput);        
             

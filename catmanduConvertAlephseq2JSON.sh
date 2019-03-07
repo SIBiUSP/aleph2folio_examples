@@ -4,31 +4,35 @@
 
 #Get Folio Token
 
-FOLIO_TOKEN=$( curl --silent --output /dev/null -w '\n' -D - -X POST -H "Content-type: application/json" \
-  -H "Accept: application/json" -H "X-Okapi-Tenant: diku" \
-  -d '{"username":"diku_admin","password":"admin"}' \
-  http://172.31.1.52:9130/authn/login | grep x-okapi-token | sed 's/x-okapi-token: //')
+OKAPI=http://172.31.1.52:9130
+FOLIO_TOKEN=$( curl -s -S -D - -H "X-Okapi-Tenant: diku" -H "Content-type: application/json" -H "Accept: application/json" \
+    -d '{"tenant":"diku","username":"diku_admin","password":"admin"}' $OKAPI/authn/login \
+    | grep -i "^x-okapi-token: " | sed 's/x-okapi-token: //' )  
 
-# Convert ALEPHSEQ to Folio Codex JSON
+# Convert input file to JSON and import in FOLIO
 
-catmandu convert MARC --type ALEPHSEQ to JSON < input/bas01iri.seq --fix fixesCatmandu.txt  >> output/output.json
+function callcatmandu()
+{
+     echo "${1}" | catmandu convert MARC --type ALEPHSEQ to JSON --fix fixesCatmandu.txt | jq -c '.[]' | while read -r line
+     do 
+          echo $line | curl -s -S -H "Accept: application/json" -H "Content-type: application/json" -H "X-Okapi-Tenant: diku" -H "X-Okapi-Token: $FOLIO_TOKEN" -X POST -d @- $OKAPI/inventory/instances 
+     done
+}
 
-# Import Folio Codex on JSON
-jq -c '.[]' output/output.json >| output/line.txt 
+lgp=''
+ctmlins=''
 
-while read -r line; do 
-
-  echo $line > input/temp.json
-
-  UUID=$(uuidgen -r)
-  jq -c '. += {"id": "'$UUID'"}' < input/temp.json > output/complete.json
-  curl -H "Accept: application/json" -H "Content-type: application/json" -H "X-Okapi-Tenant: diku" -H "X-Okapi-Token: $FOLIO_TOKEN" -X POST -d @output/complete.json  http://172.31.1.52:9130/inventory/instances
-  #unset UUID
-  rm input/temp.json
-  rm output/complete.json
-
-done < output/line.txt
-
-# Delete temp file
-rm output/output.json
-rm output/line.txt
+cat $1 | while read -r seqlin
+do
+   sysno=$(echo ${seqlin} | cut -c 1-9)
+   if [[ "${lgp}" != "${sysno}" ]]
+   then
+          lgp="${sysno}"
+          if [[ "${ctmlins}" != "" ]]
+          then callcatmandu "${ctmlins}"
+          fi
+          ctmlins=''
+   fi
+   printf -v ctmlins "${ctmlins}\n${seqlin}"
+done
+callcatmandu ${ctmlins}
