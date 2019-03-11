@@ -3,15 +3,21 @@
 # Convert ALEPHSEQ to JSON
 
 use Catmandu;
-use JSON;
-use Data::UUID;
 use strict;
 use warnings;
 
-my $importer = Catmandu->importer('MARC',file => 'input/2records.seq' , type => 'ALEPHSEQ');
+my $importer = Catmandu->importer('MARC',file => 'input/bas01iri.seq' , type => 'ALEPHSEQ');
 my $fixer    = Catmandu->fixer('fixesCatmandu.txt');
-my $exporter = Catmandu->exporter('JSON', file => "output/output.json");
+#my $exporter = Catmandu->exporter('JSON', array => 0, line_delimited =>1, file => "output/output1.json");
 
-$exporter->add_many(
-     $fixer->fix($importer)
-);
+my $count = 0;
+
+$fixer->fix($importer->benchmark)->each(sub {
+  my $rec = $_[0];
+  Catmandu->exporter('JSON', array => 0, file => "sample-data/instance-storage/instances/out_${count}.json")->add($rec);
+  $count++;
+});
+
+system('perl load-data.pl --custom-method "instances/"=PUT sample-data');
+
+unlink glob "'sample-data/instance-storage/instances/*.*'";
