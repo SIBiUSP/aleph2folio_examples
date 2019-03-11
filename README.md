@@ -25,3 +25,9 @@ php bulkImportAlephseq.php < input/41records.seq
 // FOLIO Codex Model 
 
 https://s3.amazonaws.com/foliodocs/api/mod-inventory/inventory.html#inventory_instances_post
+
+
+
+// Using load-perl.pl
+
+perl load-data.pl --custom-method "instances/"=PUT sample-data
