@@ -435,14 +435,35 @@ class FolioREST
         $headers[] = 'X-Okapi-Token: '.$cookies.'';
         $headers[] = "Accept: application/json";
 
-        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/inventory/instances?query=hrid=$query");
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/inventory/instances?query=$query");
         //curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $server_output = curl_exec($ch);
         $resultArray = json_decode($server_output, true);
-        return $resultArray["instances"][0]["id"];
+        return $resultArray;
+        curl_close($ch);
+
+    }
+
+    static function queryHoldingsHRID($cookies, $query)
+    {
+        $ch = curl_init();
+
+        $headers = array($cookies);
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        $headers[] = "Accept: application/json";
+
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/holdings-storage/holdings?query=$query");
+        //curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);
+        $resultArray = json_decode($server_output, true);
+        return $resultArray;
         curl_close($ch);
 
     }

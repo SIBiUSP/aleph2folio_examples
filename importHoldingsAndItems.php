@@ -6,54 +6,45 @@ require 'inc/functions.php';
 
 $folioCookies = FolioREST::loginREST();
 
-$handle = fopen("input/2itens.csv", "r");
+$handle = fopen("input/itensIRI2019.csv", "r");
 if ($handle) {
     while (($line = fgets($handle)) !== false) {
         // process the line read.
         $item = explode(",", $line);
         $sysno = substr("$item[0]", 1,9);
-        $instanceUUID = FolioREST::queryInstancesHRID($folioCookies, $sysno);
+        $instance = FolioREST::queryInstancesHRID($folioCookies, "hrid=$sysno");
+
+        $instanceUUID = $instance["instances"][0]["id"]; // Colocar erro caso dê 0 a busca
 
         // Create holdings
 
+        //$holdings = FolioREST::queryInstancesHRID($folioCookies, "instanceId=$instanceUUID");
 
-#       $body_id["query"]["terms"]["_id"][] = $item[0];
-#        $exists_test = elasticsearch::elastic_search($type, "item", null, $body_id);
-#        if ($exists_test["hits"]["total"] == 1) {
-#            if (!empty($exists_test["hits"]["hits"][0]["_source"]["item"])) {
-#                foreach ($exists_test["hits"]["hits"][0]["_source"]["item"] as $existingItens) {
-#                    if ($existingItens["Z30_BARCODE"] == trim($item[2])) {
-#                        unset($existingItens);
-#                        $existingItens["Z30_BARCODE"] = trim($item[2]);
-#                        $existingItens["Z30_SUB_LIBRARY"] = trim($item[3]);
-#                        $existingItens["Z30_OPEN_DATE"] = trim($item[4]);
-#                        $existingItens["Z30_UPDATE_DATE"] = trim($item[5]);
-#                        $existingItens["Z30_NO_LOANS"] = trim($item[6]);
-#                        $existingItens["Z30_CALL_NO"] = trim($item[7]);
-#                        $existingItens["Z30_INVENTORY_NUMBER"] = trim($item[8]);
-#                        $body["doc"]["item"][] =  $existingItens;
-#                    } else {
-#                        $body["doc"]["item"][] =  $existingItens;
-#                    }
-#                }
-#            } else {
-#                $body["doc"]["item"][0]["Z30_BARCODE"] = trim($item[2]);
-#                $body["doc"]["item"][0]["Z30_SUB_LIBRARY"] = trim($item[3]);
-#                $body["doc"]["item"][0]["Z30_OPEN_DATE"] = trim($item[4]);
-#                $body["doc"]["item"][0]["Z30_UPDATE_DATE"] = trim($item[5]);
-#                $body["doc"]["item"][0]["Z30_NO_LOANS"] = trim($item[6]);
-#                $body["doc"]["item"][0]["Z30_CALL_NO"] = trim($item[7]);
-#                $body["doc"]["item"][0]["Z30_INVENTORY_NUMBER"] = trim($item[8]);
-#            }
+        //if ($holdings['totalRecords'] == 0) {
+          $holdingsInstance["id"] = gen_uuid();
+          $holdingsInstance["instanceId"] = $instanceUUID;
+          $holdingsInstance["permanentLocationId"] = "bd1ec401-d62e-4c43-9a59-04419a270618";
+          $fp = fopen('sample-data/holdings-storage/holdings/'.$holdingsInstance["id"].'.json', 'w');
+          fwrite($fp, json_encode($holdingsInstance));
+          fclose($fp);
+        //} else {
+        //  echo "Não";
+        //}
 
-#            $body["doc"]["itemCollect"] = true;
-#            $body["doc"]["itemCollectDate"] = date("Ymd");
-#            $body["doc_as_upsert"] = true;
-#            $response = elasticsearch::elastic_update($item[0], $type, $body);
-#            print_r($response);
-#        }
-#        unset($body_id);
-#        unset($body);
+        // Create items
+
+        $barcode = trim(str_replace('"','',$item[1]));
+
+        $itemToJSON["id"] = gen_uuid();
+        $itemToJSON["holdingsRecordId"] = $holdingsInstance["id"];
+        $itemToJSON["barcode"] = $barcode;
+        $itemToJSON["materialTypeId"] = "1a54b431-2e4f-452d-9cae-9cee66c9a892";
+        $itemToJSON["permanentLoanTypeId"] = "2b94c631-fca9-4892-a730-03ee529ffe27";
+        $itemToJSON["status"]["name"] = "Available";
+
+        $fp = fopen('sample-data/item-storage/items/'.$itemToJSON["id"].'.json', 'w');
+        fwrite($fp, json_encode($itemToJSON));
+        fclose($fp);
 
   }
 
