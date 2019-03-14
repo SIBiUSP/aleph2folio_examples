@@ -24,6 +24,24 @@ end
 remove_field('author');
 
 do marc_each ()
+    if marc_has(110)
+        marc_map('110a','author.name')
+        marc_map('110a','author.contributorNameTypeId', -value => '2e48e713-17f3-4c13-a9f8-23845bb210aa')
+        copy_field(author,contributors.$append)
+    end
+end
+remove_field('author');
+
+do marc_each ()
+    if marc_has(111)
+        marc_map('111a','author.name')
+        marc_map('111a','author.contributorNameTypeId', -value => 'e8b311a6-3b21-43f2-a269-dd9310cb2d0a')
+        copy_field(author,contributors.$append)
+    end
+end
+remove_field('author');
+
+do marc_each ()
     if marc_has(700)
         marc_map('700a','author.name')
         marc_map('700a','author.contributorNameTypeId', -value => '2b94c631-fca9-4892-a730-03ee529ffe2a')
@@ -32,7 +50,50 @@ do marc_each ()
 end
 remove_field('author');
 
+do marc_each ()
+    if marc_has(710)
+        marc_map('710a','author.name')
+        marc_map('710a','author.contributorNameTypeId', -value => '2e48e713-17f3-4c13-a9f8-23845bb210aa')
+        copy_field(author,contributors.$append)
+    end
+end
+remove_field('author');
+
+do marc_each ()
+    if marc_has(711)
+        marc_map('711a','author.name')
+        marc_map('711a','author.contributorNameTypeId', -value => 'e8b311a6-3b21-43f2-a269-dd9310cb2d0a')
+        copy_field(author,contributors.$append)
+    end
+end
+remove_field('author');
+
+do marc_each ()
+    if marc_has(130)
+        marc_map('130a','alternativeTitle')
+        copy_field(alternativeTitle,alternativeTitles.$append)
+    end
+end
+remove_field('alternativeTitle');
+
+do marc_each ()
+    if marc_has(240)
+        marc_map('240a','alternativeTitle')
+        copy_field(alternativeTitle,alternativeTitles.$append)
+    end
+end
+remove_field('alternativeTitle');
+
 marc_map('245a', 'title');
+
+do marc_each ()
+    if marc_has(246)
+        marc_map('246a','alternativeTitle')
+        copy_field(alternativeTitle,alternativeTitles.$append)
+    end
+end
+remove_field('alternativeTitle');
+
 marc_map('250a', 'editions.$append');
 
 do marc_each ()
@@ -45,8 +106,79 @@ do marc_each ()
 end
 remove_field('imprint');
 
+do marc_each ()
+    if marc_has(264)
+        marc_map('264b','imprint.publisher')
+        marc_map('264a','imprint.place')
+        marc_map('264c','imprint.dateOfPublication')
+        copy_field(imprint, publication.$append)
+    end
+end
+remove_field('imprint');
+
 marc_map('300a', 'physicalDescriptions.$append');
+marc_map('362', 'notes.$append');
+marc_map('440', 'series.$append');
 marc_map('490', 'series.$append');
 marc_map('500a', 'notes.$append');
+marc_map('501a', 'notes.$append');
+marc_map('502a', 'notes.$append');
+marc_map('504a', 'notes.$append');
+marc_map('505a', 'notes.$append');
+marc_map('506a', 'notes.$append');
+marc_map('507a', 'notes.$append');
+marc_map('508a', 'notes.$append');
+marc_map('510a', 'notes.$append');
+marc_map('511a', 'notes.$append');
+marc_map('513a', 'notes.$append');
+marc_map('514a', 'notes.$append');
+marc_map('515a', 'notes.$append');
+marc_map('516a', 'notes.$append');
+marc_map('518a', 'notes.$append');
+marc_map('520a', 'notes.$append');
+marc_map('521a', 'notes.$append');
+marc_map('522a', 'notes.$append');
+marc_map('524a', 'notes.$append');
+marc_map('525a', 'notes.$append');
+marc_map('526a', 'notes.$append');
+marc_map('530a', 'notes.$append');
+marc_map('532a', 'notes.$append');
+marc_map('533a', 'notes.$append');
+marc_map('534a', 'notes.$append');
+marc_map('535a', 'notes.$append');
+marc_map('536a', 'notes.$append');
+marc_map('538a', 'notes.$append');
+marc_map('540a', 'notes.$append');
+marc_map('541a', 'notes.$append');
+marc_map('542a', 'notes.$append');
+marc_map('544a', 'notes.$append');
+marc_map('545a', 'notes.$append');
+marc_map('546a', 'notes.$append');
+marc_map('547a', 'notes.$append');
+marc_map('550a', 'notes.$append');
+marc_map('552a', 'notes.$append');
+marc_map('555a', 'notes.$append');
+marc_map('556a', 'notes.$append');
+marc_map('561a', 'notes.$append');
+marc_map('562a', 'notes.$append');
+marc_map('563a', 'notes.$append');
+marc_map('565a', 'notes.$append');
+marc_map('567a', 'notes.$append');
+marc_map('580a', 'notes.$append');
+marc_map('581a', 'notes.$append');
+marc_map('583a', 'notes.$append');
+marc_map('584a', 'notes.$append');
+marc_map('585a', 'notes.$append');
+marc_map('586a', 'notes.$append');
+marc_map('588a', 'notes.$append');
+marc_map('590a', 'notes.$append');
+marc_map('600a', 'subjects.$append');
+marc_map('610a', 'subjects.$append');
+marc_map('611a', 'subjects.$append');
+marc_map('630a', 'subjects.$append');
 marc_map('650a', 'subjects.$append');
+marc_map('651a', 'subjects.$append');
+marc_map('653a', 'subjects.$append');
+marc_map('655a', 'subjects.$append');
+marc_map('690a', 'subjects.$append');
 remove_field('record');
