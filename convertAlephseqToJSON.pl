@@ -6,7 +6,7 @@ use Catmandu;
 use strict;
 use warnings;
 
-my $importer = Catmandu->importer('MARC',file => 'input/bas01.seq' , type => 'ALEPHSEQ');
+my $importer = Catmandu->importer('MARC',file => 'input/bas01iri.seq' , type => 'ALEPHSEQ');
 my $fixer    = Catmandu->fixer('fixesCatmandu.txt');
 #my $exporter = Catmandu->exporter('JSON', array => 0, line_delimited =>1, file => "output/output1.json");
 
