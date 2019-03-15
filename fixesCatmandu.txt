@@ -1,5 +1,9 @@
 move_field('_id', 'hrid');
 uuid(id);
+copy_field('id','exporter.id');
+copy_field('hrid','exporter.hrid');
+add_to_exporter(exporter,CSV,file:output/sysno_id.csv);
+remove_field('exporter');
 add_field('source', 'DEDALUS');
 add_field('instanceTypeId', '6312d172-f0cf-40f6-b27d-9fa8feaf332f');
 
@@ -68,31 +72,31 @@ do marc_each ()
 end
 remove_field('author');
 
-do marc_each ()
-    if marc_has(130)
-        marc_map('130a','alternativeTitle')
-        copy_field(alternativeTitle,alternativeTitles.$append)
-    end
-end
-remove_field('alternativeTitle');
+#do marc_each ()
+#    if marc_has(130)
+#        marc_map('130a','alternativeTitle')
+#        copy_field(alternativeTitle,alternativeTitles.$append)
+#    end
+#end
+#remove_field('alternativeTitle');
 
-do marc_each ()
-    if marc_has(240)
-        marc_map('240a','alternativeTitle')
-        copy_field(alternativeTitle,alternativeTitles.$append)
-    end
-end
-remove_field('alternativeTitle');
+#do marc_each ()
+#    if marc_has(240)
+#        marc_map('240a','alternativeTitle')
+#        copy_field(alternativeTitle,alternativeTitles.$append)
+#    end
+#end
+#remove_field('alternativeTitle');
 
 marc_map('245a', 'title');
 
-do marc_each ()
-    if marc_has(246)
-        marc_map('246a','alternativeTitle')
-        copy_field(alternativeTitle,alternativeTitles.$append)
-    end
-end
-remove_field('alternativeTitle');
+#do marc_each ()
+#    if marc_has(246)
+#        marc_map('246a','alternativeTitle')
+#        copy_field(alternativeTitle,alternativeTitles.$append)
+#    end
+#end
+#remove_field('alternativeTitle');
 
 marc_map('250a', 'editions.$append');
 
