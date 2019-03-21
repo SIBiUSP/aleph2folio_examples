@@ -16,8 +16,10 @@ $importer->benchmark->each(sub {
    my $rec = $_[0];
    Catmandu->exporter('MARC', type => 'MiJ', array => 0, fix=> 'marcInJSON.txt', file => "outputJSON/out_${count}.json")->add($rec);
    $count++;
-   if(($count % 100) == 0){
+   if(($count % 10) == 0){
       system('/bin/bash importSourceRecord.sh');
    }
 });
+
+system('/bin/bash importSourceRecord.sh');
 
