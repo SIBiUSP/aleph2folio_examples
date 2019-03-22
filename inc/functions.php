@@ -39,7 +39,7 @@ function AlephseqToFolioCodex($line)
 
 
     $control_fields = array("LDR","DEL","FMT","001","008");
-    $repetitive_fields = array("100","510","536","650","651","655","700","856","946","952","CAT");
+    $repetitive_fields = array("100","510","536","650","651","655","700","856","946","952","CAT","Z30");
 
     if (in_array($field, $control_fields)) {
         $marc["record"][$field]["content"] = trim(substr($line, 18));
@@ -66,53 +66,6 @@ function AlephseqToFolioCodex($line)
 
     //$marc["record"][$field]["ind_1"] = $ind_1;
     //$marc["record"][$field]["ind_2"] = $ind_2;
-
-    $i++;
-
-}
-
-
-function AlephseqToMods($line)
-{
-
-    global $marc;
-    global $i;
-    global $id;
-
-    $id = substr($line, 0, 9);
-    $field = substr($line, 10, 3);
-    $ind_1 = substr($line, 13, 1);
-    $ind_2 = substr($line, 14, 1);
-
-
-    $control_fields = array("LDR","DEL","FMT","001","008");
-    $repetitive_fields = array("100","510","536","650","651","655","700","856","946","952","CAT");
-
-    if (in_array($field, $control_fields)) {
-        $marc["record"][$field]["content"] = trim(substr($line, 18));
-
-    } elseif (in_array($field, $repetitive_fields)) {
-        $content = explode("\$", substr($line, 18));
-        foreach ($content as &$content_line) {
-            if (!empty($content_line)) {
-                $marc["record"][$field][$i][substr($content_line, 0, 1)] = trim(substr($content_line, 1));
-            }
-
-
-        }
-
-
-    } else {
-        $content = explode("\$", substr($line, 18));
-        foreach ($content as &$content_line) {
-            if (!empty($content_line)) {
-                $marc["record"][$field][substr($content_line, 0, 1)][] = trim(substr($content_line, 1));
-            }
-        }
-    }
-
-    $marc["record"][$field]["ind_1"] = $ind_1;
-    $marc["record"][$field]["ind_2"] = $ind_2;
 
     $i++;
 
@@ -490,6 +443,52 @@ class FolioREST
         curl_close($ch);
 
     }
+
+    static function addHoldingsREST($cookies,$json) {
+        $ch = curl_init();
+
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";
+
+
+        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/holdings-storage/holdings');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);
+        print_r($server_output);
+        curl_close($ch);
+
+    }
+    
+    static function addItemREST($cookies,$json) {
+        $ch = curl_init();
+
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";
+
+
+        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/item-storage/items');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $server_output = curl_exec($ch);
+        print_r($server_output);
+        curl_close($ch);
+
+    }    
 
     static function deleteRecordsREST($cookies,$id) {
         $ch = curl_init();
