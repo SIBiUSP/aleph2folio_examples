@@ -437,6 +437,7 @@ class FolioREST
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_VERBOSE, false);
 
         $server_output = curl_exec($ch);
         print_r($server_output);
@@ -460,6 +461,7 @@ class FolioREST
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_VERBOSE, false);
 
         $server_output = curl_exec($ch);
         print_r($server_output);
@@ -483,6 +485,7 @@ class FolioREST
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_VERBOSE, false);
 
         $server_output = curl_exec($ch);
         print_r($server_output);

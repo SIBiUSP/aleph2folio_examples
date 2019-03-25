@@ -45,24 +45,21 @@ while ($line = fgets(STDIN)) {
             $holdings["instanceId"] = $body["id"];
             $jsonHoldings = json_encode($holdings); 
 
-            #FolioREST::addHoldingsREST($folioCookies, $jsonHoldings); 
+            FolioREST::addHoldingsREST($folioCookies, $jsonHoldings); 
          
 
             # Create itens    
             foreach ($marc["record"]["Z30"] as $item) {
 
                 $itemArray["id"] = gen_uuid();
-                $itemArray["callNumber"] = $item["3"];
+                $itemArray["holdingsRecordId"] = $holdings["id"];                
+                $itemArray["itemLevelCallNumber"] = $item["3"];
                 $itemArray["barcode"] = $item["5"];
-                $itemArray["materialType"][0]["id"] = gen_uuid();
-                $itemArray["materialType"][0]["name"] = "Book";
-                $itemArray["permanentLoanType"][0]["id"] = gen_uuid();
-                $itemArray["permanentLoanType"][0]["name"] = "Can Circulate";                
-                $itemArray["permanentLocation"][0]["id"] = gen_uuid();
-                $itemArray["permanentLocation"][0]["name"] = "Main Library";
+                $itemArray["materialTypeId"] = "1a54b431-2e4f-452d-9cae-9cee66c9a892";
+                $itemArray["permanentLoanTypeId"] = "2b94c631-fca9-4892-a730-03ee529ffe27";
                 
                 $jsonItem = json_encode($itemArray);
-                #FolioREST::addItemREST($folioCookies, $jsonItem); 
+                FolioREST::addItemREST($folioCookies, $jsonItem); 
 
             }
         }
@@ -70,6 +67,7 @@ while ($line = fgets(STDIN)) {
         $marc = [];
         $record = [];
         $alephseq = [];
+        $holdings = [];
     } 
 
     $sysno_old = $sysno;
