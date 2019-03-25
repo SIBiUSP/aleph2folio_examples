@@ -127,6 +127,26 @@ function fixes($marc)
         unset($author);
     }
 
+    if (isset($marc["record"]["110"])) {
+        foreach (($marc["record"]["110"]) as $person) {
+            $author["name"] = $person["a"];
+            $author["contributorNameTypeId"] = "2e48e713-17f3-4c13-a9f8-23845bb210aa";
+        }
+        $body["contributors"][] = $author;
+        unset($person);
+        unset($author);
+    }
+    
+    if (isset($marc["record"]["111"])) {
+        foreach (($marc["record"]["111"]) as $person) {
+            $author["name"] = $person["a"];
+            $author["contributorNameTypeId"] = "e8b311a6-3b21-43f2-a269-dd9310cb2d0a";
+        }
+        $body["contributors"][] = $author;
+        unset($person);
+        unset($author);
+    }        
+
     // if (isset($marc["record"]["242"])) {
     //     if (isset($marc["record"]["242"]["b"][0])) {
     //         $body["alternativeTitles"][] = $marc["record"]["242"]["a"][0] . ": " . $marc["record"]["242"]["b"][0];
@@ -172,6 +192,70 @@ function fixes($marc)
         $body["physicalDescriptions"] = $marc["record"]["300"]["a"];
     }
 
+    if (isset($marc["record"]["362"])) {
+        $body["notes"][] = $marc["record"]["362"];
+    }
+    
+    if (isset($marc["record"]["500"]["a"])) {
+        $body["notes"][] = $marc["record"]["500"]["a"];
+    }
+    
+    if (isset($marc["record"]["501"]["a"])) {
+        $body["notes"][] = $marc["record"]["501"]["a"];
+    }
+    
+    if (isset($marc["record"]["502"]["a"])) {
+        $body["notes"][] = $marc["record"]["502"]["a"];
+    }
+    
+    if (isset($marc["record"]["504"]["a"])) {
+        $body["notes"][] = $marc["record"]["504"]["a"];
+    }
+
+    if (isset($marc["record"]["505"]["a"])) {
+        $body["notes"][] = $marc["record"]["505"]["a"];
+    } 
+    
+    if (isset($marc["record"]["506"]["a"])) {
+        $body["notes"][] = $marc["record"]["506"]["a"];
+    }
+    
+    if (isset($marc["record"]["507"]["a"])) {
+        $body["notes"][] = $marc["record"]["507"]["a"];
+    }    
+    
+    if (isset($marc["record"]["600"])) {
+        foreach (($marc["record"]["600"]) as $subject) {
+            if (isset($subject["a"])) {
+                $body["subjects"][] = $subject["a"];
+            }
+        }
+    } 
+    
+    if (isset($marc["record"]["610"])) {
+        foreach (($marc["record"]["610"]) as $subject) {
+            if (isset($subject["a"])) {
+                $body["subjects"][] = $subject["a"];
+            }
+        }
+    } 
+    
+    if (isset($marc["record"]["611"])) {
+        foreach (($marc["record"]["611"]) as $subject) {
+            if (isset($subject["a"])) {
+                $body["subjects"][] = $subject["a"];
+            }
+        }
+    }
+    
+    if (isset($marc["record"]["630"])) {
+        foreach (($marc["record"]["630"]) as $subject) {
+            if (isset($subject["a"])) {
+                $body["subjects"][] = $subject["a"];
+            }
+        }
+    }    
+
     if (isset($marc["record"]["650"])) {
         foreach (($marc["record"]["650"]) as $subject) {
             if (isset($subject["a"])) {
@@ -179,6 +263,38 @@ function fixes($marc)
             }
         }
     }
+
+    if (isset($marc["record"]["651"])) {
+        foreach (($marc["record"]["651"]) as $subject) {
+            if (isset($subject["a"])) {
+                $body["subjects"][] = $subject["a"];
+            }
+        }
+    }
+    
+    if (isset($marc["record"]["653"])) {
+        foreach (($marc["record"]["653"]) as $subject) {
+            if (isset($subject["a"])) {
+                $body["subjects"][] = $subject["a"];
+            }
+        }
+    }
+    
+    if (isset($marc["record"]["655"])) {
+        foreach (($marc["record"]["655"]) as $subject) {
+            if (isset($subject["a"])) {
+                $body["subjects"][] = $subject["a"];
+            }
+        }
+    } 
+    
+    if (isset($marc["record"]["690"])) {
+        foreach (($marc["record"]["690"]) as $subject) {
+            if (isset($subject["a"])) {
+                $body["subjects"][] = $subject["a"];
+            }
+        }
+    }     
 
     if (isset($marc["record"]["700"])) {
 
@@ -202,6 +318,26 @@ function fixes($marc)
         unset($person);
         unset($author);
     }
+
+    if (isset($marc["record"]["710"])) {
+        foreach (($marc["record"]["710"]) as $person) {
+            $author["name"] = $person["a"];
+            $author["contributorNameTypeId"] = "2e48e713-17f3-4c13-a9f8-23845bb210aa";
+        }
+        $body["contributors"][] = $author;
+        unset($person);
+        unset($author);
+    }
+    
+    if (isset($marc["record"]["711"])) {
+        foreach (($marc["record"]["711"]) as $person) {
+            $author["name"] = $person["a"];
+            $author["contributorNameTypeId"] = "e8b311a6-3b21-43f2-a269-dd9310cb2d0a";
+        }
+        $body["contributors"][] = $author;
+        unset($person);
+        unset($author);
+    }       
 
     return $body;
     unset($body);
