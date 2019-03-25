@@ -28,6 +28,8 @@ while ($line = fgets(STDIN)) {
         $body = fixes($marc);
         $jsonOutput = json_encode($body); 
 
+        print_r($jsonOutput);
+
         FolioREST::addRecordREST($folioCookies, $jsonOutput);
         
         # Import Source Record
@@ -41,18 +43,27 @@ while ($line = fgets(STDIN)) {
         if (isset($marc["record"]["Z30"])) {
             # Create holdings 
 
-            $holdings["id"] = gen_uuid();
-            $holdings["instanceId"] = $body["id"];
-            $jsonHoldings = json_encode($holdings); 
+            foreach ($marc["record"]["Z30"] as $libraryHolding) {
+                $librariesArray[] = $libraryHolding["1"];
+            }
+            $librariesArrayUnique = array_unique($librariesArray);
 
-            FolioREST::addHoldingsREST($folioCookies, $jsonHoldings); 
+            foreach ($librariesArrayUnique as $libraryCode) {
+                $holdings["id"] = gen_uuid();
+                $holdings["instanceId"] = $body["id"];
+                $holdings["permanentLocationId"] = decode::get_library_location_id($libraryCode);
+                $jsonHoldings = json_encode($holdings);
+                $holdingsID["$libraryCode"] = $holdings["id"]; 
+                FolioREST::addHoldingsREST($folioCookies, $jsonHoldings);  
+            }
          
 
             # Create itens    
             foreach ($marc["record"]["Z30"] as $item) {
 
+                $libraryCodeitem = $item["1"];
                 $itemArray["id"] = gen_uuid();
-                $itemArray["holdingsRecordId"] = $holdings["id"];                
+                $itemArray["holdingsRecordId"] = $holdingsID["$libraryCodeitem"];                
                 $itemArray["itemLevelCallNumber"] = $item["3"];
                 $itemArray["barcode"] = $item["5"];
                 $itemArray["materialTypeId"] = "1a54b431-2e4f-452d-9cae-9cee66c9a892";
@@ -68,6 +79,7 @@ while ($line = fgets(STDIN)) {
         $record = [];
         $alephseq = [];
         $holdings = [];
+        $librariesArray = [];
     } 
 
     $sysno_old = $sysno;

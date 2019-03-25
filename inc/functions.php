@@ -197,31 +197,31 @@ function fixes($marc)
     }
     
     if (isset($marc["record"]["500"]["a"])) {
-        $body["notes"][] = $marc["record"]["500"]["a"];
+        $body["notes"][] = $marc["record"]["500"]["a"][0];
     }
     
     if (isset($marc["record"]["501"]["a"])) {
-        $body["notes"][] = $marc["record"]["501"]["a"];
+        $body["notes"][] = $marc["record"]["501"]["a"][0];
     }
     
     if (isset($marc["record"]["502"]["a"])) {
-        $body["notes"][] = $marc["record"]["502"]["a"];
+        $body["notes"][] = $marc["record"]["502"]["a"][0];
     }
     
     if (isset($marc["record"]["504"]["a"])) {
-        $body["notes"][] = $marc["record"]["504"]["a"];
+        $body["notes"][] = $marc["record"]["504"]["a"][0];
     }
 
     if (isset($marc["record"]["505"]["a"])) {
-        $body["notes"][] = $marc["record"]["505"]["a"];
+        $body["notes"][] = $marc["record"]["505"]["a"][0];
     } 
     
     if (isset($marc["record"]["506"]["a"])) {
-        $body["notes"][] = $marc["record"]["506"]["a"];
+        $body["notes"][] = $marc["record"]["506"]["a"][0];
     }
     
     if (isset($marc["record"]["507"]["a"])) {
-        $body["notes"][] = $marc["record"]["507"]["a"];
+        $body["notes"][] = $marc["record"]["507"]["a"][0];
     }    
     
     if (isset($marc["record"]["600"])) {
@@ -321,7 +321,7 @@ function fixes($marc)
 
     if (isset($marc["record"]["710"])) {
         foreach (($marc["record"]["710"]) as $person) {
-            $author["name"] = $person["a"];
+            $author["name"] = $person[0];
             $author["contributorNameTypeId"] = "2e48e713-17f3-4c13-a9f8-23845bb210aa";
         }
         $body["contributors"][] = $author;
@@ -331,7 +331,7 @@ function fixes($marc)
     
     if (isset($marc["record"]["711"])) {
         foreach (($marc["record"]["711"]) as $person) {
-            $author["name"] = $person["a"];
+            $author["name"] = $person[0];
             $author["contributorNameTypeId"] = "e8b311a6-3b21-43f2-a269-dd9310cb2d0a";
         }
         $body["contributors"][] = $author;
@@ -406,6 +406,38 @@ function fixesMods($marc)
     return json_encode($body);
     unset($body);
 
+}
+
+/*
+* Decodifica dados *
+*/
+class decode
+{
+
+    /* Pegar o ID da biblioteca */
+    static function get_library_location_id($libraryCode)
+    {
+        switch ($libraryCode) {
+        case "FD":
+            return "6a8d28d7-f051-4fc2-ad13-0488fb5c5c4e";
+            break;
+        case "FE":
+            return "1ceefbde-74a6-4788-bbe8-b4d8fb08f535";
+            break;
+        case "FEA":
+            return "bc4e77a1-8f0a-4450-b1ee-00ab41f3072f";
+            break;
+        case "FFLCH":
+            return "1be69072-f433-4b54-a587-af77158c52f1";
+            break;                                     
+        case "IRI":
+            return "bd1ec401-d62e-4c43-9a59-04419a270618";
+            break;
+        case "IO":
+            return "25cbb3d4-0e29-4dd0-8233-903d5971fe33";
+            break;                          
+        }
+    }
 }
 
 function oracle_sysno($sysno)
@@ -567,13 +599,13 @@ class FolioREST
         $headers[] = "Accept: application/json";
 
 
-        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/inventory/instances');
+        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/instance-storage/instances');
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_VERBOSE, false);
+        curl_setopt($ch, CURLOPT_VERBOSE, true);
 
         $server_output = curl_exec($ch);
         print_r($server_output);
