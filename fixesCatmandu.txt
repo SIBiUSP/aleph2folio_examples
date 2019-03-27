@@ -199,9 +199,9 @@ do marc_each ()
         marc_map('Z30-13','item.classification')
         copy_field(imprint, publication.$append)
 
-        add_to_exporter(holdings,JSON,file:sample-data/holdings-storage/holdings/holdings.json);
+        add_to_exporter(holdings,JSON,array:0,line_delimited:1,file:sample-data/holdings-storage/holdings/holdings.json);
 
-        add_to_exporter(item,JSON,file:sample-data/item-storage/items/itens.json);
+        add_to_exporter(item,JSON,array:0,line_delimited:1,file:sample-data/item-storage/items/itens.json);
 
         remove_field('item');
     end
