@@ -47,7 +47,7 @@ my $token = $login_res->header('X-Okapi-Token');
 
 my $get_req = HTTP::Request->new(
   'GET',
-  "$okapiurl/locations",
+  "$okapiurl/locations?limit=2000",
   ['X-Okapi-Tenant' => $tenant,
   'Content-Type' => 'application/json; charset=UTF-8',
   'Accept' => 'application/json',
@@ -58,6 +58,8 @@ my $get_resp = $ua->request($get_req);
 die "FAILED loading " . $get_resp->status_line . ": " . $get_resp->content . "\n" unless $get_resp->is_success;
 
 my $locations = decode_json($get_resp->content);
+
+my $holdings = {};
 
 my $importer = Catmandu->importer('MARC', 'type' => 'ALEPHSEQ');
 my $fixer = Catmandu->fixer($ARGV[0]);
@@ -101,29 +103,25 @@ $importer->each( sub {
   my $put_resp = $ua->request($put_req);
   die "FAILED loading " . $put_resp->status_line . ": " . $put_resp->content . "\n" unless $put_resp->is_success;
 
-  my $holdings = {};
-
   foreach ( map {exists($_->{'Z30'}) ? $_->{'Z30'} : ()} @{$mijd->{'fields'}} ) {
     foreach ( @{$_->{'subfields'}} ){
-      if( exists($_->{'1'}) && !exists($holdings->{$_->{'1'}}) ){
+      if( exists($_->{'1'}) && !exists($holdings->{$_->{'1'}.'-'.$instanceID}) ){
         my $bibcode = $_->{'1'};
-        $holdings->{$bibcode}->{'id'} = Data::GUID->new->as_string;
-        $holdings->{$bibcode}->{'instanceId'} = $instanceID;
-        $holdings->{$bibcode}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
+        $holdings->{$bibcode.'-'.$instanceID}->{'id'} = Data::GUID->new->as_string;
+        $holdings->{$bibcode.'-'.$instanceID}->{'instanceId'} = $instanceID;
+        $holdings->{$bibcode.'-'.$instanceID}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
+
+
+
       }
     }
-  }
-
-  print " holdings json:[\n", encode_json($holdings), "\n]\n";
-
-  foreach ( map {exists($_->{'Z30'}) ? $_->{'Z30'} : ()} @{$mijd->{'fields'}} ) {
     my $item = {};
     $item->{'id'} = Data::GUID->new->as_string;
     $item->{'materialTypeId'} = '1a54b431-2e4f-452d-9cae-9cee66c9a892';
     $item->{'permanentLoanTypeId'} = '2b94c631-fca9-4892-a730-03ee529ffe27';
     foreach ( @{$_->{'subfields'}} ){
       if(exists($_->{'1'})){
-        $item->{'holdingsRecordId'} = $holdings->{$_->{'1'}}->{'id'};
+        $item->{'holdingsRecordId'} = $holdings->{$_->{'1'}.'-'.$instanceID}->{'id'};
       }
       if(exists($_->{'3'})){
         $item->{'itemLevelCallNumber'} = $_->{'3'};
@@ -133,7 +131,12 @@ $importer->each( sub {
       }
     }
     print "item json:[\n", encode_json($item), "\n]\n";
+    undef $item;
   }
 
 });
+
+print " holdings json:[\n", encode_json($holdings), "\n]\n";
+
+# dump($locations);
 
