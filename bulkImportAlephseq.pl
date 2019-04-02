@@ -111,7 +111,17 @@ $importer->each( sub {
         $holdings->{$bibcode.'-'.$instanceID}->{'instanceId'} = $instanceID;
         $holdings->{$bibcode.'-'.$instanceID}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
 
-
+        my $holdings_req = HTTP::Request->new(
+          'PUT',
+          "$okapiurl/holdings-storage/holdings/".$holdings->{$bibcode.'-'.$instanceID}->{'id'},
+          ['X-Okapi-Tenant' => $tenant,
+          'Content-Type' => 'application/json; charset=UTF-8',
+          'Accept' => 'text/plain',
+          'X-Okapi-Token' => $token ],
+          encode_utf8(encode_json($holdings->{$bibcode.'-'.$instanceID}))
+        );
+        my $holdings_resp = $ua->request($holdings_req);
+        die "FAILED loading " . $holdings_resp->status_line . ": " . $holdings_resp->content . "\n" unless $holdings_resp->is_success;
 
       }
     }
@@ -130,13 +140,26 @@ $importer->each( sub {
         $item->{'barcode'} = $_->{'5'};
       }
     }
-    print "item json:[\n", encode_json($item), "\n]\n";
+    # print "item json:[\n", encode_json($item), "\n]\n";
+
+    my $item_req = HTTP::Request->new(
+      'PUT',
+      "$okapiurl/item-storage/items/".$item->{'id'},
+      ['X-Okapi-Tenant' => $tenant,
+      'Content-Type' => 'application/json; charset=UTF-8',
+      'Accept' => 'text/plain',
+      'X-Okapi-Token' => $token ],
+      encode_utf8(encode_json($item))
+    );
+    my $item_resp = $ua->request($item_req);
+    die "FAILED loading " . $item_resp->status_line . ": " . $item_resp->content . "\n" unless $item_resp->is_success;
+
     undef $item;
   }
 
 });
 
-print " holdings json:[\n", encode_json($holdings), "\n]\n";
+# print " holdings json:[\n", encode_json($holdings), "\n]\n";
 
 # dump($locations);
 
