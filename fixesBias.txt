@@ -182,26 +182,4 @@ marc_map('653a', 'subjects.$append');
 marc_map('655a', 'subjects.$append');
 marc_map('690a', 'subjects.$append');
 
-
-# do marc_each ()
-#     if marc_has(Z30-1)
-#         copy_field('id','holdings.instanceID');
-#         uuid(holdings.id);
-# 
-#         copy_field('holdings.id','item.holdingsID');
-#         uuid(item.id);
-#         marc_map('Z30-15','item.barcode')
-#         marc_map('Z30-11','item.sublibrary')
-#         marc_map('Z30-13','item.classification')
-#         copy_field(imprint, publication.$append)
-# 
-#         add_to_exporter(holdings,JSON,file:sample-data/holdings-storage/holdings/holdings.json);
-# 
-#         add_to_exporter(item,JSON,file:sample-data/item-storage/items/itens.json);
-# 
-#         remove_field('item');
-#     end
-# end
-
-
 remove_field('record');
