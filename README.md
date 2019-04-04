@@ -9,6 +9,7 @@ Catmandu: http://librecat.org/
 # Install Catmandu in Debian
 
 sudo apt-get update
+
 sudo apt-get install libcatmandu*-perl
 
 ## If need install an extra Catmandu module
