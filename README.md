@@ -23,3 +23,7 @@ http://librecat.org/Catmandu/#installation
 # Sample usage
 
 perl bulkImportAlephseq.pl fixesBias.txt < input/2records.seq
+
+# Catmandu Fixes 
+
+https://github.com/LibreCat/Catmandu/wiki/Fixes-Cheat-Sheet
