@@ -15,6 +15,15 @@ end
 remove_field('isbn');
 
 do marc_each ()
+    if marc_has(022)
+        marc_map('022a', 'issn.value')
+        marc_map('022a', 'issn.identifierTypeId', -value => '913300b2-03ed-469a-8179-c1092c991227')
+        copy_field(issn, identifiers.$append)
+    end
+end
+remove_field('issn');
+
+do marc_each ()
     if marc_has(100)
         marc_map('100a','author.name')
         marc_map('100a','author.contributorNameTypeId', -value => '2b94c631-fca9-4892-a730-03ee529ffe2a')
