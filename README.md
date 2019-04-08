@@ -6,6 +6,11 @@ Examples to Convert ALEPHSEQ to JSON
 
 Catmandu: http://librecat.org/
 
+
+# IMPORTANT
+
+Needs to create Locations on FOLIO with the same code used in Aleph
+
 # Install Catmandu in Debian
 
 sudo apt-get update
@@ -22,7 +27,7 @@ http://librecat.org/Catmandu/#installation
 
 # Sample usage
 
-perl bulkImportAlephseq.pl fixesBias.txt < input/2records.seq
+perl bulkImportAlephseq.pl fixes.txt < input/2records.seq
 
 # Catmandu Fixes 
 
