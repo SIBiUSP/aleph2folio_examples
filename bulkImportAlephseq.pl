@@ -131,6 +131,7 @@ $importer->each( sub {
     $item->{'id'} = Data::GUID->new->as_string;
     $item->{'materialTypeId'} = '1a54b431-2e4f-452d-9cae-9cee66c9a892';
     $item->{'permanentLoanTypeId'} = '2b94c631-fca9-4892-a730-03ee529ffe27';
+    $item->{'status'}->{'name'} = 'Available';
     foreach ( @{$_->{'subfields'}} ){
       if(exists($_->{'1'})){
         $item->{'holdingsRecordId'} = $holdings->{$_->{'1'}.'-'.$instanceID}->{'id'};
