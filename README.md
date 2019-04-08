@@ -27,7 +27,7 @@ http://librecat.org/Catmandu/#installation
 
 # Sample usage
 
-perl bulkImportAlephseq.pl fixes.txt < input/2records.seq
+perl bulkImportAlephseq.pl fixes.txt ALEPHSEQ < input/2records.seq
 
 # Catmandu Fixes 
 

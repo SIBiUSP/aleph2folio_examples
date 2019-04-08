@@ -62,7 +62,7 @@ my $locations = decode_json($res->content);
 
 my $holdings = {};
 
-my $importer = Catmandu->importer('MARC', 'type' => 'ALEPHSEQ');
+my $importer = Catmandu->importer('MARC', 'type' => $ARGV[1]);
 my $seqfix = Catmandu->fixer($ARGV[0]);
 my $mijfix = Catmandu->fixer('remove_field(_id)','marc_remove(FMT)','marc_in_json()');
 
