@@ -25,9 +25,13 @@ sudo cpanm  Catmandu::XLS
 
 http://librecat.org/Catmandu/#installation
 
-# Sample usage
+# Sample usage with ALEPHSEQ
 
 perl bulkImportAlephseq.pl fixes.txt ALEPHSEQ < input/2records.seq
+
+# Sample usage with .mrc
+
+perl bulkImportAlephseq.pl fixes.txt ISO < input/examples.mrc
 
 # Catmandu Fixes 
 
