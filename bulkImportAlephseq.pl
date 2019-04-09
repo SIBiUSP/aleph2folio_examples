@@ -110,6 +110,7 @@ $importer->each( sub {
         my $bibcode = $_->{'1'};
         $holdings->{$bibcode.'-'.$instanceID}->{'id'} = Data::GUID->new->as_string;
         $holdings->{$bibcode.'-'.$instanceID}->{'instanceId'} = $instanceID;
+        $holdings->{$bibcode.'-'.$instanceID}->{'holdingsTypeId'} = '0c422f92-0f4d-4d32-8cbe-390ebc33a3e5'; #Lembrar de fazer um if para serial se for issue       
         $holdings->{$bibcode.'-'.$instanceID}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
 
         $req = HTTP::Request->new(
