@@ -1,7 +1,16 @@
 move_field('_id', 'hrid');
 uuid(id);
 add_field('source', 'DEDALUS');
+
 add_field('instanceTypeId', '6312d172-f0cf-40f6-b27d-9fa8feaf332f');
+
+marc_map('FMT', 'fmt')
+if all_equal('fmt','SE')
+    add_field('modeOfIssuanceId', '068b5344-e2a6-40df-9186-1829e13cd344');
+else
+    add_field('modeOfIssuanceId', '9d18a02f-5897-4c31-9106-c9abb5c7ae8b');
+end
+remove_field('fmt');
 
 marc_map('008_/35-37','languages.$append');
 
