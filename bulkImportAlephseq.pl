@@ -64,7 +64,7 @@ my $holdings = {};
 
 my $importer = Catmandu->importer('MARC', 'type' => $ARGV[1]);
 my $seqfix = Catmandu->fixer($ARGV[0]);
-my $mijfix = Catmandu->fixer('remove_field(_id)','marc_remove(FMT)','marc_in_json()');
+my $mijfix = Catmandu->fixer('remove_field(_id)','marc_remove(FMT)','marc_set(LDR/23,0)','marc_in_json()');
 
 $importer->each( sub {
 
