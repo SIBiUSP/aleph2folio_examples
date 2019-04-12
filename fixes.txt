@@ -2,7 +2,13 @@ move_field('_id', 'hrid');
 uuid(id);
 add_field('source', 'DEDALUS');
 
-add_field('instanceTypeId', '6312d172-f0cf-40f6-b27d-9fa8feaf332f');
+
+if marc_has('336b')
+    marc_map('336b', 'instanceTypeId');
+    lookup('instanceTypeId','rdacontent.csv', sep_char:'|')
+else
+    add_field('instanceTypeId', '6312d172-f0cf-40f6-b27d-9fa8feaf332f');
+end
 
 marc_map('FMT', 'modeOfIssuanceId')
 lookup("modeOfIssuanceId","fmt.csv", sep_char:'|')
@@ -97,7 +103,16 @@ remove_field('author');
 #end
 #remove_field('alternativeTitle');
 
-marc_map('245a', 'title');
+if marc_has(245a)
+    marc_map('245a', 'title');
+else
+    if marc_has(246a)
+        marc_map('246a', 'title');
+    else
+        marc_set('245a','');
+        add_field('title', '');
+    end
+end
 
 #do marc_each ()
 #    if marc_has(246)

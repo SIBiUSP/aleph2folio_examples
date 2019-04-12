@@ -1,0 +1,7 @@
+remove_field('_id')
+marc_remove('FMT')
+marc_set('LDR/21','0')
+marc_set('LDR/22','0')
+marc_set('LDR/23','0')
+remove_field('title');
+marc_in_json()
