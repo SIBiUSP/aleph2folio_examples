@@ -95,16 +95,17 @@ remove_field('author');
 #end
 #remove_field('alternativeTitle');
 
-#do marc_each ()
-#    if marc_has(240)
-#        marc_map('240a','alternativeTitle')
-#        copy_field(alternativeTitle,alternativeTitles.$append)
-#    end
-#end
-#remove_field('alternativeTitle');
+do marc_each ()
+    if marc_has(240)
+        marc_map('240a','at.alternativeTitle')
+        marc_map('240','at.alternativeTitleTypeId', -value => '0fe58901-183e-4678-a3aa-0b4751174ba8')
+        copy_field(at,alternativeTitles.$append)
+    end
+end
+remove_field('at');
 
 if marc_has(245a)
-    marc_map('245a', 'title');
+    marc_map('245ab', 'title', join:' ');
 else
     if marc_has(246a)
         marc_map('246a', 'title');
