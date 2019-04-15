@@ -1,16 +1,25 @@
 if marc_has('001')
     marc_map('001', 'hrid');
+    marc_map('020a', 'control_number.value')
+    marc_map('020a', 'control_number.identifierTypeId', -value => '5d164f4b-0b15-4e42-ae75-cfcf85318ad9')
+    copy_field(control_number, identifiers.$append)
     remove_field('_id');
 else
     move_field('_id', 'hrid');
 end
+remove_field('control_number');
 
 uuid(id);
 add_field('source', 'DEDALUS');
 add_field('statusId', '52a2ff34-2a12-420d-8539-21aa8d3cf5d8');
 
-marc_map('=FMT', 'modeOfIssuanceId')
-lookup('modeOfIssuanceId','fmt.csv', sep_char:'|')
+
+if marc_has('FMT')
+    marc_map('FMT', 'modeOfIssuanceId')
+    lookup('modeOfIssuanceId','fmt.csv', sep_char:'|')
+else
+    add_field('modeOfIssuanceId', '9d18a02f-5897-4c31-9106-c9abb5c7ae8b');
+end
 
 if marc_has('005')
     marc_map('005', 'catalogedDate');

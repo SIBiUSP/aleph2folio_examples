@@ -1,0 +1,58 @@
+000001662 FMT   L BK
+000001662 LDR   L 01307ccm^a2200385Ia^4500
+000001662 001   L 000001662
+000001662 005   L 20140804085415.0
+000001662 008   L 740912s1950^^^^nyuzzz^^^^^^^^^n^^^^N/Amd
+000001662 02832 L $$aPa. No. 89$$bBoosey & Hawkes
+000001662 02822 L $$aB. & H. 16968$$bBoosey & Hawkes
+000001662 035   L $$a(OCoLC)ocm01005215
+000001662 0359  L $$aAMH-10037792
+000001662 040   L $$aTLM$$cTLM$$dOCL$$dm.c.$$dUUM$$dAMH$$dUtOrBLW
+000001662 0450  L $$bd190806
+000001662 048   L $$aka01
+000001662 090   L $$aM24.B315$$bE3 1950
+000001662 099   L $$aM781.1$$aB285ea$$aB
+000001662 1001  L $$aBartók, Béla,$$d1881-1945.
+000001662 24010 L $$aKönnyű zongoradarabok
+000001662 24510 L $$aTen easy piano pieces :$$bpiano solo /$$cBéla Bartók.
+000001662 264 1 L $$aNew York :$$bBoosey & Hawkes,$$c[1950]
+000001662 264 4 L $$c©1950
+000001662 300   L $$a16 pages of music ;$$c31 cm
+000001662 336   L $$anotated music$$bntm$$2rdacontent
+000001662 337   L $$aunmediated$$bn$$2rdamedia
+000001662 338   L $$avolume$$bnc$$2rdacarrier
+000001662 5050  L $$aDedication -- Peasant song -- Painful struggle -- Dance of the Slovaks -- Sostenuto -- Evening in the country -- Hungarian folk song -- Aurora --Folk song -- Finger exercise -- Bear dance.
+000001662 650 0 L $$aPiano music.
+000001662 998   L $$aa$$b12-01-93$$cm$$dc$$e-$$fn/a$$gnyu$$h0
+000001662 OWN   L $$aAM
+000001662 049   L $$aAMHI
+000001662 907   L $$a.b10037792$$b03-31-06$$c12-03-93
+000001662 910   L $$arecon Nv86 11Je65
+000001662 92800 L $$aRETURNED20140812
+000006904 FMT   L BK
+000006904 LDR   L 01316cam^a2200337I^^4500
+000006904 001   L 000006904
+000006904 005   L 20140804085932.0
+000006904 008   L 741121s1906^^^^enk^^^^^^^^^^^000^0^engmd
+000006904 010   L $$a07028942
+000006904 035   L $$a(OCoLC)ocm01082960
+000006904 0359  L $$aAMH-10154292
+000006904 040   L $$cOUN$$dm.c.$$dAMH$$dUtOrBLW
+000006904 050 0 L $$aPR2910$$b.R7
+000006904 099   L $$a822.33Z$$aR746s
+000006904 1001  L $$aDe Rothschild, J. A.$$q(James Armand),$$d1878-1957.
+000006904 24510 L $$aShakespeare and his day ;$$ba study of the topical element in Shakespeare and in the Elizabethan drama /$$cbeing the Harness prize essay, 1901. by J. A. de Rothschild ... 2d impression.
+000006904 264 1 L $$aLondon :$$bE. Arnold,$$c1906.
+000006904 300   L $$axi, 251 pages ;$$c20 cm
+000006904 336   L $$atext$$btxt$$2rdacontent
+000006904 337   L $$aunmediated$$bn$$2rdamedia
+000006904 338   L $$avolume$$bnc$$2rdacarrier
+000006904 5831  L $$acommitted to retain$$c20160630$$d20310630$$fEAST$$uhttp://eastlibraries.org/retained-materials$$zAmherst College copy: EAST commitment$$5MA
+000006904 60010 L $$aShakespeare, William,$$d1564-1616.
+000006904 650 0 L $$aEnglish drama$$yEarly modern and Elizabethan, 1500-1600$$xHistory and criticism.
+000006904 651 0 L $$aEngland$$xSocial life and customs.
+000006904 998   L $$aa$$b12-01-93$$cm$$da$$e-$$feng$$genk$$h0
+000006904 OWN   L $$aAM
+000006904 049   L $$aAMHH
+000006904 907   L $$a.b10154292$$b03-31-06$$c12-03-93
+000006904 92800 L $$aRETURNED20140812
