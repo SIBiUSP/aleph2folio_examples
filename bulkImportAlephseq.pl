@@ -3,8 +3,10 @@
 # sample usage:
 # perl bulkImportAlephseq.pl fixesBias.txt < input/2records.seq
 #
+use strict;
+use warnings;
 
-use Data::Walk;
+# use Data::Walk;
 use Data::GUID;
 use Data::Dump qw(dump);
 use Encode qw(encode_utf8);
@@ -13,11 +15,11 @@ use JSON::MaybeXS qw(encode_json);
 use JSON::MaybeXS qw(decode_json);
 use Data::Format::Pretty::JSON qw(format_pretty);
 use LWP::UserAgent;
+use Getopt::Long qw(GetOptions);
+use Pod::Usage qw(pod2usage);
 # use LWP::ConsoleLogger::Easy qw(debug_ua);
 use Catmandu;
 use Storable qw(dclone);
-use strict;
-use warnings;
 
 my $ua = LWP::UserAgent->new;
 
@@ -31,6 +33,35 @@ my $okapiurl = 'http://172.31.1.52:9130';
 my $tenant = 'diku';
 my $password = 'admin';
 my $username = 'diku_admin';
+my $instancesfixfile = 'instancesfix.txt';
+my $holdingsfixfile = 'holdingsfix.txt';
+my $fixmijf = 'fixesMiJ.txt';
+my $filestype = 'ALEPHSEQ';
+my $instancesfile = '';
+my $holdingsfile = '';
+my $itemsfile = '';
+my $man = 0;
+my $help = 0;
+
+pod2usage("$0: No files given.")  if ((@ARGV == 0) && (-t STDIN));
+
+GetOptions(
+  'okapiurl:s' => \$okapiurl,
+  'tenant:s' => \$tenant,
+  'password:s' => \$password,
+  'user:s' => \$username,
+  'instancefixes:s' => \$instancesfixfile,
+  'holdingsfixes:s' => \$holdingsfixfile,
+  'mijfix:s' => \$fixmijf,
+  'type:s' => \$filestype,
+  'instances:s' => \$instancesfile,
+  'holdings:s' => \$holdingsfile,
+  'items:s' => \$itemsfile,
+  'help|?' => \$help,
+  'man' => \$man
+) or pod2usage(2);
+pod2usage(1) if $help;
+pod2usage(-verbose => 2) if $man;
 
 $req = HTTP::Request->new(
  'POST',
@@ -62,19 +93,23 @@ my $locations = decode_json($res->content);
 
 my $holdings = {};
 
-my $importer = Catmandu->importer('MARC', 'type' => $ARGV[1]);
-my $seqfix = Catmandu->fixer($ARGV[0]);
-my $mijfix = Catmandu->fixer('fixesMiJ.txt');
+my $instancesimporter = Catmandu->importer('MARC', 'type' => $filestype, 'file' => $instancesfile);
+my $instancesfix = Catmandu->fixer($instancesfixfile);
+my $mijfix = Catmandu->fixer($fixmijf);
 
-$importer->each( sub {
+my $instancesIDsysno = {};
+
+$instancesimporter->each( sub {
 
   my $data = shift;
 
   my $mijd = dclone $data;
 
-  $seqfix->fix($data);
+  $instancesfix->fix($data);
 
-  my $instanceID = $data->{'id'};
+  # my $instanceID = $data->{'id'};
+  my $sysno = $data->{'hrid'};
+  $instancesIDsysno->{$sysno} = $data->{'id'};
 
   $req = HTTP::Request->new(
     'POST',
@@ -93,7 +128,7 @@ $importer->each( sub {
 
   $req = HTTP::Request->new(
     'PUT',
-    "$okapiurl/instance-storage/instances/$instanceID/source-record/marc-json",
+    "$okapiurl/instance-storage/instances/".$instancesIDsysno->{$sysno}."/source-record/marc-json",
     ['X-Okapi-Tenant' => $tenant,
     'Content-Type' => 'application/json; charset=UTF-8',
     'Accept' => 'text/plain',
@@ -106,21 +141,21 @@ $importer->each( sub {
 
   foreach ( map {exists($_->{'Z30'}) ? $_->{'Z30'} : ()} @{$mijd->{'fields'}} ) {
     foreach ( @{$_->{'subfields'}} ){
-      if( exists($_->{'1'}) && !exists($holdings->{$_->{'1'}.'-'.$instanceID}) ){
+      if( exists($_->{'1'}) && !exists($holdings->{$_->{'1'}.'-'.$instancesIDsysno->{$sysno}}) ){
         my $bibcode = $_->{'1'};
-        $holdings->{$bibcode.'-'.$instanceID}->{'id'} = Data::GUID->new->as_string;
-        $holdings->{$bibcode.'-'.$instanceID}->{'instanceId'} = $instanceID;
-        $holdings->{$bibcode.'-'.$instanceID}->{'holdingsTypeId'} = '0c422f92-0f4d-4d32-8cbe-390ebc33a3e5'; #Lembrar de fazer um if para serial se for issue       
-        $holdings->{$bibcode.'-'.$instanceID}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
+        $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'id'} = Data::GUID->new->as_string;
+        $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'instanceId'} = $instancesIDsysno->{$sysno};
+        $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'holdingsTypeId'} = '0c422f92-0f4d-4d32-8cbe-390ebc33a3e5'; #Lembrar de fazer um if para serial se for issue       
+        $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
 
         $req = HTTP::Request->new(
           'PUT',
-          "$okapiurl/holdings-storage/holdings/".$holdings->{$bibcode.'-'.$instanceID}->{'id'},
+          "$okapiurl/holdings-storage/holdings/".$holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'id'},
           ['X-Okapi-Tenant' => $tenant,
           'Content-Type' => 'application/json; charset=UTF-8',
           'Accept' => 'text/plain',
           'X-Okapi-Token' => $token ],
-          encode_utf8(encode_json($holdings->{$bibcode.'-'.$instanceID}))
+          encode_utf8(encode_json($holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}))
         );
         $res = $ua->request($req);
         die "error: " . $res->status_line . ": " . $res->content . "\n" unless $res->is_success;
@@ -135,7 +170,7 @@ $importer->each( sub {
     $item->{'status'}->{'name'} = 'Available';
     foreach ( @{$_->{'subfields'}} ){
       if(exists($_->{'1'})){
-        $item->{'holdingsRecordId'} = $holdings->{$_->{'1'}.'-'.$instanceID}->{'id'};
+        $item->{'holdingsRecordId'} = $holdings->{$_->{'1'}.'-'.$instancesIDsysno->{$sysno}}->{'id'};
       }
       if(exists($_->{'3'})){
         $item->{'itemLevelCallNumber'} = $_->{'3'};
@@ -157,8 +192,85 @@ $importer->each( sub {
     $res = $ua->request($req);
     die "error: " . $res->status_line . ": " . $res->content . "\n" unless $res->is_success;
 
-    undef $item;
-    
+    undef $item;    
   }
 
 });
+
+if(-e $holdingsfile){
+
+  my $holdingsimporter = Catmandu->importer('MARC', 'type' => $filestype, 'file' => $holdingsfile);
+  my $holdingsfix = Catmandu->fixer($holdingsfixfile);
+
+  $holdingsimporter->each( sub {
+
+    my $data = shift;
+    $holdingsfix->fix($data);
+
+    my $sysno = $data->{'sysno'};
+    my $bibcode = $data->{'location'};
+
+    $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'id'} = Data::GUID->new->as_string;
+    $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'instanceId'} = $instancesIDsysno->{$sysno};
+    $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'holdingsTypeId'} = '0c422f92-0f4d-4d32-8cbe-390ebc33a3e5'; #Lembrar de fazer um if para serial se for issue       
+    $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
+    $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'callNumber'} = $data->{'callNumber'};
+
+    $req = HTTP::Request->new(
+      'PUT',
+      "$okapiurl/holdings-storage/holdings/".$holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'id'},
+      ['X-Okapi-Tenant' => $tenant,
+      'Content-Type' => 'application/json; charset=UTF-8',
+      'Accept' => 'text/plain',
+      'X-Okapi-Token' => $token ],
+      encode_utf8(encode_json($holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}))
+    );
+    $res = $ua->request($req);
+    die "error: " . $res->status_line . ": " . $res->content . "\n" unless $res->is_success;
+
+  });
+}
+
+__END__
+
+=head1 NAME
+
+Bulk Import to Folio
+
+=head1 SYNOPSIS
+
+  Options:
+   -okapiurl       ( default http://172.31.1.52:9130 )
+   -tenant         ( default diku )
+   -password       ( default admin )
+   -user           ( default diku_admin )
+   -instancefixes  ( default instancesfix.txt )
+   -holdingsfixes  ( default holdingsfix.txt )
+   -mijfix         ( default fixesMiJ.txt )
+   -type           ( default ALEPHSEQ )
+   -instances      instances file
+   -holdings       holdings file
+   -items          items file ( not yet )
+   -help           print help
+   -man            call manpage
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-help>
+
+This bulk importer aims to aid on an importing task when bringing records, holdings and items from a catmandu compatible marc descripted set towards folio.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=back
+
+=head1 DESCRIPTION
+
+B<This program> will read the given input file(s) and do something
+useful with the contents thereof.
+
+=cut

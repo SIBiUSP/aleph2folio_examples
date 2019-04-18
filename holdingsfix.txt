@@ -1,0 +1,4 @@
+
+marc_map('LKRb','sysno');
+marc_map('852c','location');
+marc_map('852h','callNumber');
