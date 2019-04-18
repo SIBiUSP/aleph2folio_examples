@@ -33,8 +33,9 @@ do marc_each ()
         marc_map('020a', 'isbn.identifierTypeId', -value => '8261054f-be78-422d-bd51-4ed9f33c3422')
         copy_field(isbn, identifiers.$append)
     end
+    remove_field('isbn');
 end
-remove_field('isbn');
+
 
 do marc_each ()
     if marc_has(022)
@@ -42,8 +43,9 @@ do marc_each ()
         marc_map('022a', 'issn.identifierTypeId', -value => '913300b2-03ed-469a-8179-c1092c991227')
         copy_field(issn, identifiers.$append)
     end
+    remove_field('issn');
 end
-remove_field('issn');
+
 
 do marc_each ()
     if marc_has(035)
@@ -51,8 +53,9 @@ do marc_each ()
         marc_map('035a', 'system_num.identifierTypeId', -value => '7e591197-f335-4afb-bc6d-a6d76ca3bace')
         copy_field(system_num, identifiers.$append)
     end
+    remove_field('system_num');
 end
-remove_field('system_num');
+
 
 do marc_each ()
     if marc_has(100)
@@ -60,8 +63,8 @@ do marc_each ()
         marc_map('100a','author.contributorNameTypeId', -value => '2b94c631-fca9-4892-a730-03ee529ffe2a')
         copy_field(author,contributors.$append)
     end
+    remove_field('author');
 end
-remove_field('author');
 
 do marc_each ()
     if marc_has(110)
@@ -69,8 +72,9 @@ do marc_each ()
         marc_map('110a','author.contributorNameTypeId', -value => '2e48e713-17f3-4c13-a9f8-23845bb210aa')
         copy_field(author,contributors.$append)
     end
+    remove_field('author');
 end
-remove_field('author');
+
 
 do marc_each ()
     if marc_has(111)
@@ -78,8 +82,9 @@ do marc_each ()
         marc_map('111a','author.contributorNameTypeId', -value => 'e8b311a6-3b21-43f2-a269-dd9310cb2d0a')
         copy_field(author,contributors.$append)
     end
+    remove_field('author');
 end
-remove_field('author');
+
 
 do marc_each ()
     if marc_has(700)
@@ -87,8 +92,9 @@ do marc_each ()
         marc_map('700a','author.contributorNameTypeId', -value => '2b94c631-fca9-4892-a730-03ee529ffe2a')
         copy_field(author,contributors.$append)
     end
+    remove_field('author');
 end
-remove_field('author');
+
 
 do marc_each ()
     if marc_has(710)
@@ -96,8 +102,9 @@ do marc_each ()
         marc_map('710a','author.contributorNameTypeId', -value => '2e48e713-17f3-4c13-a9f8-23845bb210aa')
         copy_field(author,contributors.$append)
     end
+    remove_field('author');
 end
-remove_field('author');
+
 
 do marc_each ()
     if marc_has(711)
@@ -105,8 +112,9 @@ do marc_each ()
         marc_map('711a','author.contributorNameTypeId', -value => 'e8b311a6-3b21-43f2-a269-dd9310cb2d0a')
         copy_field(author,contributors.$append)
     end
+    remove_field('author');
 end
-remove_field('author');
+
 
 #do marc_each ()
 #    if marc_has(130)
@@ -122,8 +130,9 @@ do marc_each ()
         marc_map('240','at.alternativeTitleTypeId', -value => '0fe58901-183e-4678-a3aa-0b4751174ba8')
         copy_field(at,alternativeTitles.$append)
     end
+    remove_field('at');
 end
-remove_field('at');
+
 
 if marc_has(245a)
     marc_map('245ab', 'title', join:' ');
@@ -153,8 +162,9 @@ do marc_each ()
         marc_map('260c','imprint.dateOfPublication')
         copy_field(imprint, publication.$append)
     end
+    remove_field('imprint');
 end
-remove_field('imprint');
+
 
 do marc_each ()
     if marc_has(264)
@@ -163,8 +173,9 @@ do marc_each ()
         marc_map('264c','imprint.dateOfPublication')
         copy_field(imprint, publication.$append)
     end
+    remove_field('imprint');
 end
-remove_field('imprint');
+
 
 marc_map('300', 'physicalDescriptions.$append', join:' ');
 
