@@ -1,3 +1,4 @@
+#!/bin/perl
 
 # perl version of bulkImportAlephseq.php
 # sample usage:
