@@ -1,7 +1,7 @@
 
 # perl version of bulkImportAlephseq.php
 # sample usage:
-# perl bulkImportAlephseq.pl fixesBias.txt < input/2records.seq
+# perl bulkImportAlephseq.pl -type MARCMaker -instances holdings_examples/fc_bib_2_examples.mrk -holdings holdings_examples/fc_bib_hol_2_examples.mrk
 #
 use strict;
 use warnings;
