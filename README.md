@@ -27,11 +27,11 @@ http://librecat.org/Catmandu/#installation
 
 # Sample usage with ALEPHSEQ
 
-perl bulkImportAlephseq.pl fixes.txt ALEPHSEQ < input/2records.seq
+perl bulkImportAlephseq.pl -type ALEPHSEQ -instances holdings_examples/fc_bib_2_examples.seq -holdings holdings_examples/fc_bib_hol_2_examples.seq
 
-# Sample usage with .mrc
+# Sample usage with .mrk
 
-perl bulkImportAlephseq.pl fixes.txt ISO < input/examples.mrc
+perl bulkImportAlephseq.pl -type MARCMaker -instances holdings_examples/fc_bib_2_examples.mrk -holdings holdings_examples/fc_bib_hol_2_examples.mrk
 
 # Formats accepted
 
