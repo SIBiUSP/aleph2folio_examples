@@ -108,9 +108,11 @@ $instancesimporter->each( sub {
 
   $instancesfix->fix($data);
 
-  # my $instanceID = $data->{'id'};
-  my $sysno = $data->{'hrid'};
-  $instancesIDsysno->{$sysno} = $data->{'id'};
+  my $instanceID = $data->{'id'};
+  
+  if(defined($data->{'hrid'})){
+    $instancesIDsysno->{$data->{'hrid'}} = $instanceID;
+  }
 
   $req = HTTP::Request->new(
     'POST',
@@ -129,7 +131,7 @@ $instancesimporter->each( sub {
 
   $req = HTTP::Request->new(
     'PUT',
-    "$okapiurl/instance-storage/instances/".$instancesIDsysno->{$sysno}."/source-record/marc-json",
+    "$okapiurl/instance-storage/instances/".$instanceID."/source-record/marc-json",
     ['X-Okapi-Tenant' => $tenant,
     'Content-Type' => 'application/json; charset=UTF-8',
     'Accept' => 'text/plain',
@@ -144,21 +146,21 @@ $instancesimporter->each( sub {
 
     foreach ( map {exists($_->{'Z30'}) ? $_->{'Z30'} : ()} @{$mijd->{'fields'}} ) {
       foreach ( @{$_->{'subfields'}} ){
-        if( exists($_->{'1'}) && !exists($holdings->{$_->{'1'}.'-'.$instancesIDsysno->{$sysno}}) ){
+        if( defined($_->{'1'}) && !defined($holdings->{$_->{'1'}.'-'.$instanceID}) ){
           my $bibcode = $_->{'1'};
-          $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'id'} = Data::GUID->new->as_string;
-          $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'instanceId'} = $instancesIDsysno->{$sysno};
-          $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'holdingsTypeId'} = '0c422f92-0f4d-4d32-8cbe-390ebc33a3e5'; #Lembrar de fazer um if para serial se for issue       
-          $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
+          $holdings->{$bibcode.'-'.$instanceID}->{'id'} = Data::GUID->new->as_string;
+          $holdings->{$bibcode.'-'.$instanceID}->{'instanceId'} = $instanceID;
+          $holdings->{$bibcode.'-'.$instanceID}->{'holdingsTypeId'} = '0c422f92-0f4d-4d32-8cbe-390ebc33a3e5'; #Lembrar de fazer um if para serial se for issue       
+          $holdings->{$bibcode.'-'.$instanceID}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
 
           $req = HTTP::Request->new(
             'PUT',
-            "$okapiurl/holdings-storage/holdings/".$holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'id'},
+            "$okapiurl/holdings-storage/holdings/".$holdings->{$bibcode.'-'.$instanceID}->{'id'},
             ['X-Okapi-Tenant' => $tenant,
             'Content-Type' => 'application/json; charset=UTF-8',
             'Accept' => 'text/plain',
             'X-Okapi-Token' => $token ],
-            encode_utf8(encode_json($holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}))
+            encode_utf8(encode_json($holdings->{$bibcode.'-'.$instanceID}))
           );
           $res = $ua->request($req);
           die "error: " . $res->status_line . ": " . $res->content . "\n" unless $res->is_success;
@@ -172,13 +174,13 @@ $instancesimporter->each( sub {
       $item->{'permanentLoanTypeId'} = '2b94c631-fca9-4892-a730-03ee529ffe27';
       $item->{'status'}->{'name'} = 'Available';
       foreach ( @{$_->{'subfields'}} ){
-        if(exists($_->{'1'}) && exists($instancesIDsysno->{$sysno}) && exists($holdings->{$_->{'1'}.'-'.$instancesIDsysno->{$sysno}}->{'id'})){
-          $item->{'holdingsRecordId'} = $holdings->{$_->{'1'}.'-'.$instancesIDsysno->{$sysno}}->{'id'};
+        if(defined($_->{'1'}) && defined($instanceID) && defined($holdings->{$_->{'1'}.'-'.$instanceID}->{'id'})){
+          $item->{'holdingsRecordId'} = $holdings->{$_->{'1'}.'-'.$instanceID}->{'id'};
         }
-        if(exists($_->{'3'})){
+        if(defined($_->{'3'})){
           $item->{'itemLevelCallNumber'} = $_->{'3'};
         }
-        if(exists($_->{'5'})){
+        if(defined($_->{'5'})){
           $item->{'barcode'} = $_->{'5'};
         }
       }
@@ -210,27 +212,28 @@ if(-e $holdingsfile){
   $holdingsimporter->each( sub {
 
     my $data = shift;
+
     $holdingsfix->fix($data);
 
     if(exists($data->{'sysno'}) && exists($data->{'location'})){
 
-      my $sysno = $data->{'sysno'};
+      my $instanceID = $instancesIDsysno->{$data->{'sysno'}};
       my $bibcode = $data->{'location'};
 
-      $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'id'} = Data::GUID->new->as_string;
-      $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'instanceId'} = $instancesIDsysno->{$sysno};
-      $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'holdingsTypeId'} = '0c422f92-0f4d-4d32-8cbe-390ebc33a3e5'; #Lembrar de fazer um if para serial se for issue       
-      $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
-      $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'callNumber'} = $data->{'callNumber'};
+      $holdings->{$bibcode.'-'.$instanceID}->{'id'} = Data::GUID->new->as_string;
+      $holdings->{$bibcode.'-'.$instanceID}->{'instanceId'} = $instanceID;
+      $holdings->{$bibcode.'-'.$instanceID}->{'holdingsTypeId'} = '0c422f92-0f4d-4d32-8cbe-390ebc33a3e5'; #Lembrar de fazer um if para serial se for issue       
+      $holdings->{$bibcode.'-'.$instanceID}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
+      $holdings->{$bibcode.'-'.$instanceID}->{'callNumber'} = $data->{'callNumber'};
 
       $req = HTTP::Request->new(
         'PUT',
-        "$okapiurl/holdings-storage/holdings/".$holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'id'},
+        "$okapiurl/holdings-storage/holdings/".$holdings->{$bibcode.'-'.$instanceID}->{'id'},
         ['X-Okapi-Tenant' => $tenant,
         'Content-Type' => 'application/json; charset=UTF-8',
         'Accept' => 'text/plain',
         'X-Okapi-Token' => $token ],
-        encode_utf8(encode_json($holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}))
+        encode_utf8(encode_json($holdings->{$bibcode.'-'.$instanceID}))
       );
       $res = $ua->request($req);
       die "error: " . $res->status_line . ": " . $res->content . "\n" unless $res->is_success;
