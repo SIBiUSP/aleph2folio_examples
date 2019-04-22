@@ -215,7 +215,7 @@ if(-e $holdingsfile){
 
     $holdingsfix->fix($data);
 
-    if(exists($data->{'sysno'}) && exists($data->{'location'})){
+    if(defined($data->{'sysno'}) && defined($data->{'location'})){
 
       my $instanceID = $instancesIDsysno->{$data->{'sysno'}};
       my $bibcode = $data->{'location'};
