@@ -140,60 +140,64 @@ $instancesimporter->each( sub {
   $res = $ua->request($req);
   die "error: " . $res->status_line . ": " . $res->content . "\n" unless $res->is_success;
 
-  foreach ( map {exists($_->{'Z30'}) ? $_->{'Z30'} : ()} @{$mijd->{'fields'}} ) {
-    foreach ( @{$_->{'subfields'}} ){
-      if( exists($_->{'1'}) && !exists($holdings->{$_->{'1'}.'-'.$instancesIDsysno->{$sysno}}) ){
-        my $bibcode = $_->{'1'};
-        $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'id'} = Data::GUID->new->as_string;
-        $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'instanceId'} = $instancesIDsysno->{$sysno};
-        $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'holdingsTypeId'} = '0c422f92-0f4d-4d32-8cbe-390ebc33a3e5'; #Lembrar de fazer um if para serial se for issue       
-        $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
+  if(!-e $holdingsfile){
 
-        $req = HTTP::Request->new(
-          'PUT',
-          "$okapiurl/holdings-storage/holdings/".$holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'id'},
-          ['X-Okapi-Tenant' => $tenant,
-          'Content-Type' => 'application/json; charset=UTF-8',
-          'Accept' => 'text/plain',
-          'X-Okapi-Token' => $token ],
-          encode_utf8(encode_json($holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}))
-        );
-        $res = $ua->request($req);
-        die "error: " . $res->status_line . ": " . $res->content . "\n" unless $res->is_success;
-      }
-    }
+    foreach ( map {exists($_->{'Z30'}) ? $_->{'Z30'} : ()} @{$mijd->{'fields'}} ) {
+      foreach ( @{$_->{'subfields'}} ){
+        if( exists($_->{'1'}) && !exists($holdings->{$_->{'1'}.'-'.$instancesIDsysno->{$sysno}}) ){
+          my $bibcode = $_->{'1'};
+          $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'id'} = Data::GUID->new->as_string;
+          $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'instanceId'} = $instancesIDsysno->{$sysno};
+          $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'holdingsTypeId'} = '0c422f92-0f4d-4d32-8cbe-390ebc33a3e5'; #Lembrar de fazer um if para serial se for issue       
+          $holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'permanentLocationId'} = (map { $_->{'code'} eq $bibcode ? $_->{'id'} : () } @{$locations->{'locations'}})[0];
 
-    my $item = {};
-    
-    $item->{'id'} = Data::GUID->new->as_string;
-    $item->{'materialTypeId'} = '1a54b431-2e4f-452d-9cae-9cee66c9a892';
-    $item->{'permanentLoanTypeId'} = '2b94c631-fca9-4892-a730-03ee529ffe27';
-    $item->{'status'}->{'name'} = 'Available';
-    foreach ( @{$_->{'subfields'}} ){
-      if(exists($_->{'1'}) && exists($instancesIDsysno->{$sysno}) && exists($holdings->{$_->{'1'}.'-'.$instancesIDsysno->{$sysno}}->{'id'})){
-        $item->{'holdingsRecordId'} = $holdings->{$_->{'1'}.'-'.$instancesIDsysno->{$sysno}}->{'id'};
+          $req = HTTP::Request->new(
+            'PUT',
+            "$okapiurl/holdings-storage/holdings/".$holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}->{'id'},
+            ['X-Okapi-Tenant' => $tenant,
+            'Content-Type' => 'application/json; charset=UTF-8',
+            'Accept' => 'text/plain',
+            'X-Okapi-Token' => $token ],
+            encode_utf8(encode_json($holdings->{$bibcode.'-'.$instancesIDsysno->{$sysno}}))
+          );
+          $res = $ua->request($req);
+          die "error: " . $res->status_line . ": " . $res->content . "\n" unless $res->is_success;
+        }
       }
-      if(exists($_->{'3'})){
-        $item->{'itemLevelCallNumber'} = $_->{'3'};
-      }
-      if(exists($_->{'5'})){
-        $item->{'barcode'} = $_->{'5'};
-      }
-    }
 
-    $req = HTTP::Request->new(
-      'PUT',
-      "$okapiurl/item-storage/items/".$item->{'id'},
-      ['X-Okapi-Tenant' => $tenant,
-      'Content-Type' => 'application/json; charset=UTF-8',
-      'Accept' => 'text/plain',
-      'X-Okapi-Token' => $token ],
-      encode_utf8(encode_json($item))
-    );
-    $res = $ua->request($req);
-    die "error: " . $res->status_line . ": " . $res->content . "\n" unless $res->is_success;
+      my $item = {};
+      
+      $item->{'id'} = Data::GUID->new->as_string;
+      $item->{'materialTypeId'} = '1a54b431-2e4f-452d-9cae-9cee66c9a892';
+      $item->{'permanentLoanTypeId'} = '2b94c631-fca9-4892-a730-03ee529ffe27';
+      $item->{'status'}->{'name'} = 'Available';
+      foreach ( @{$_->{'subfields'}} ){
+        if(exists($_->{'1'}) && exists($instancesIDsysno->{$sysno}) && exists($holdings->{$_->{'1'}.'-'.$instancesIDsysno->{$sysno}}->{'id'})){
+          $item->{'holdingsRecordId'} = $holdings->{$_->{'1'}.'-'.$instancesIDsysno->{$sysno}}->{'id'};
+        }
+        if(exists($_->{'3'})){
+          $item->{'itemLevelCallNumber'} = $_->{'3'};
+        }
+        if(exists($_->{'5'})){
+          $item->{'barcode'} = $_->{'5'};
+        }
+      }
 
-    undef $item;    
+      $req = HTTP::Request->new(
+        'PUT',
+        "$okapiurl/item-storage/items/".$item->{'id'},
+        ['X-Okapi-Tenant' => $tenant,
+        'Content-Type' => 'application/json; charset=UTF-8',
+        'Accept' => 'text/plain',
+        'X-Okapi-Token' => $token ],
+        encode_utf8(encode_json($item))
+      );
+      $res = $ua->request($req);
+      die "error: " . $res->status_line . ": " . $res->content . "\n" unless $res->is_success;
+
+      undef $item;    
+    }    
+
   }
 
 });
