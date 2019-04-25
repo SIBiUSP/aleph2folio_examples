@@ -1,0 +1,15 @@
+{
+    "id": "63db9c3f-3f2b-445c-9895-cce71995fce8",
+    "name": "FMRAD",
+    "code": "FMRAD",
+    "discoveryDisplayName": "FMRAD",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "8c19c1d4-a1bb-4c10-8946-57215d99edaa",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

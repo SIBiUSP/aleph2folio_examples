@@ -1,0 +1,15 @@
+{
+    "id": "f8695d0a-df66-486c-adef-ed70eda0a1c8",
+    "name": "IO",
+    "code": "IO",
+    "discoveryDisplayName": "IO",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "76c34256-5983-409f-8ee6-ef4e241d8a63",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

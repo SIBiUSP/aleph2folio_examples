@@ -1,0 +1,15 @@
+{
+    "id": "e396ae13-7aa8-4b9a-abdb-182d891bf84e",
+    "name": "FEA",
+    "code": "FEA",
+    "discoveryDisplayName": "FEA",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "34cf9f73-8c26-40f7-b1d0-be8fc3f7e6e5",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

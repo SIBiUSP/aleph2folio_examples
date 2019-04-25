@@ -1,0 +1,15 @@
+{
+    "id": "86c4c146-77a0-4f1f-a9a8-d821b1aa8ec3",
+    "name": "EELMT",
+    "code": "EELMT",
+    "discoveryDisplayName": "EELMT",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "e81d530a-66ff-4ea7-9c57-91ce81642b3b",
+    "libraryId": "d73014ad-dc02-475d-b7c1-465f2bda4dba",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "8f05ae74-278a-4f0c-9b7b-3aecfb849455",
+    "name": "FMCMN",
+    "code": "FMCMN",
+    "discoveryDisplayName": "FMCMN",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "8c19c1d4-a1bb-4c10-8946-57215d99edaa",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

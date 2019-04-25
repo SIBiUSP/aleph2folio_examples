@@ -1,0 +1,15 @@
+{
+    "id": "d7628f05-df56-4917-b6ed-d3fc4bc0fb4a",
+    "name": "IQSC",
+    "code": "IQSC",
+    "discoveryDisplayName": "IQSC",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "38ba292f-24da-45ac-b1e8-caf7d62a193e",
+    "libraryId": "d0be42da-fedf-4b32-b0a8-d66495fbc21e",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

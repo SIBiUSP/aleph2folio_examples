@@ -1,0 +1,15 @@
+{
+    "id": "b0b87bbc-dc96-486e-99a7-a433c0de46e2",
+    "name": "BCRP",
+    "code": "BCRP",
+    "discoveryDisplayName": "BCRP",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0ffcfd81-4977-4042-9415-6cb33bbf3484",
+    "libraryId": "4310c33b-9fa1-4359-b80e-dfc6482ad440",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

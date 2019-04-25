@@ -1,0 +1,15 @@
+{
+    "id": "652ce119-5378-4ac7-b4d1-7c308666e218",
+    "name": "ESABE",
+    "code": "ESABE",
+    "discoveryDisplayName": "ESABE",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "9d0b46d1-3055-4660-9b3f-d73a7270c870",
+    "libraryId": "0a1448e1-06a5-40e6-9fb8-225be4d81664",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

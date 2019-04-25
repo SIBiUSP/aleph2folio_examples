@@ -1,0 +1,15 @@
+{
+    "id": "8a753f9f-2d16-4e8c-ba79-52e8327e3c0f",
+    "name": "EACH",
+    "code": "EACH",
+    "discoveryDisplayName": "EACH",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "92bc85ef-f721-4db0-84b9-d6e2fc0a59ae",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

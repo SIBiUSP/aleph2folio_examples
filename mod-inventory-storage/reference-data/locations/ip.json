@@ -1,0 +1,15 @@
+{
+    "id": "979be2ce-7700-4eb4-a41b-4a4d14193e6e",
+    "name": "IP",
+    "code": "IP",
+    "discoveryDisplayName": "IP",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "6018e4c0-4198-4c25-945d-6b9cbcc17517",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

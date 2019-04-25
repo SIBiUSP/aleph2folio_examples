@@ -1,0 +1,15 @@
+{
+    "id": "8e0b2373-f2ee-4ed7-8363-eda432f6fb5b",
+    "name": "IFSC",
+    "code": "IFSC",
+    "discoveryDisplayName": "IFSC",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "38ba292f-24da-45ac-b1e8-caf7d62a193e",
+    "libraryId": "e07d6423-348f-43c5-ae5c-0f160de7c3dd",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

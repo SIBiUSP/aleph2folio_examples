@@ -1,0 +1,15 @@
+{
+    "id": "f6dbaa78-e829-46d1-8128-a58288e7c3bd",
+    "name": "MZ",
+    "code": "MZ",
+    "discoveryDisplayName": "MZ",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "e1849532-3b01-4ffa-8c30-dd228fa3c8f1",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

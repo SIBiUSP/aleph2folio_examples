@@ -1,0 +1,15 @@
+{
+    "id": "a060ea74-2524-4bd5-a220-87f02f7e4da1",
+    "name": "IEB",
+    "code": "IEB",
+    "discoveryDisplayName": "IEB",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "28e0d637-c58f-404e-b754-471090dfacfe",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "4ed19596-8a7b-4976-93f1-912acd402ec1",
+    "name": "FOB",
+    "code": "FOB",
+    "discoveryDisplayName": "FOB",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "9f7f23c8-43e7-4560-ba5a-6c873d79d79b",
+    "libraryId": "f58910c0-5a96-4a94-8888-dc9b49e712ed",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

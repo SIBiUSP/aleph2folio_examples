@@ -1,0 +1,15 @@
+{
+    "id": "31cbead3-afe4-4123-bcdd-47cddb2fac1e",
+    "name": "CQ",
+    "code": "CQ",
+    "discoveryDisplayName": "CQ",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "73c94f97-86f7-4101-a952-05d89c0b2c9e",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

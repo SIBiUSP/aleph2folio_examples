@@ -1,0 +1,15 @@
+{
+    "id": "024e94ac-01f9-4447-8378-86be774b8f02",
+    "name": "IAG",
+    "code": "IAG",
+    "discoveryDisplayName": "IAG",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "a1ae1d45-5a05-4972-8ca1-a6be32c594ef",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "1761c559-fe66-44bd-99cb-76f4c544f63d",
+    "name": "FDDCV",
+    "code": "FDDCV",
+    "discoveryDisplayName": "FDDCV",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "8e452bc2-08e4-4c84-a2ed-b4035c571a3f",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "664671c7-468b-49ec-9b49-cc7c9a31b706",
+    "name": "CBM",
+    "code": "CBM",
+    "discoveryDisplayName": "CBM",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "bd8217bc-1b08-442e-988b-7a5a8be62a06",
+    "libraryId": "345f13aa-2408-45ec-a581-e23275dc9315",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

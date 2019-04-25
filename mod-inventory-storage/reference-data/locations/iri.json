@@ -1,0 +1,15 @@
+{
+    "id": "56fd3f51-a7ee-4ea0-b491-78c3d4374a66",
+    "name": "IRI",
+    "code": "IRI",
+    "discoveryDisplayName": "IRI",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "6b2719cf-9f06-4a96-8195-7e08da6033b1",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

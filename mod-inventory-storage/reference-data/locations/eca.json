@@ -1,0 +1,15 @@
+{
+    "id": "b7d838c9-af5c-44d2-8d1b-81f316ed98b0",
+    "name": "ECA",
+    "code": "ECA",
+    "discoveryDisplayName": "ECA",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "2acf9675-2107-4375-ab4c-62c131db55e2",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

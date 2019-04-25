@@ -1,0 +1,15 @@
+{
+    "id": "c9d54962-1789-458d-acb0-ddaca4377680",
+    "name": "EPMN",
+    "code": "EPMN",
+    "discoveryDisplayName": "EPMN",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "0ecfe0e4-8e73-4bf5-a6e1-931202ca8759",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "95b69ad3-38f9-40cf-8552-a903b7c2ce6c",
+    "name": "FSP",
+    "code": "FSP",
+    "discoveryDisplayName": "FSP",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "11f1ebc2-de33-441b-898a-86abde581b34",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

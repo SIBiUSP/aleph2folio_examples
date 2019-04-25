@@ -1,0 +1,15 @@
+{
+    "id": "662bbbfb-aa32-4c23-a873-2eb534bc3294",
+    "name": "ICB",
+    "code": "ICB",
+    "discoveryDisplayName": "ICB",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "7c74d816-9e77-4b89-8761-1b75bcfae8cf",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

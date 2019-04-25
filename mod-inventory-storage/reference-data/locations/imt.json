@@ -1,0 +1,15 @@
+{
+    "id": "61f9fdf9-89d2-4f53-8b3a-c099c7dda6a2",
+    "name": "IMT",
+    "code": "IMT",
+    "discoveryDisplayName": "IMT",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "a63904eb-230f-4d1b-88ab-dc4c50dcf7ff",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

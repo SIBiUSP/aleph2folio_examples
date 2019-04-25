@@ -1,0 +1,15 @@
+{
+    "id": "46de9d2a-dbf1-491e-a287-e25b766a76ce",
+    "name": "FDDES",
+    "code": "FDDES",
+    "discoveryDisplayName": "FDDES",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "8e452bc2-08e4-4c84-a2ed-b4035c571a3f",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

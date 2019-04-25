@@ -1,0 +1,15 @@
+{
+    "id": "db30ef3d-9403-4043-8d15-af4701f95115",
+    "name": "FZEA",
+    "code": "FZEA",
+    "discoveryDisplayName": "FZEA",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "a4521180-2e53-4589-bb23-a87c6dec5976",
+    "libraryId": "88b47df3-f79c-46ae-a5bb-b83b8898d94b",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

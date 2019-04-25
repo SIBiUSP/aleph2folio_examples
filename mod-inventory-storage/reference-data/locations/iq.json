@@ -1,0 +1,15 @@
+{
+    "id": "15c30fae-ed72-4d07-995e-939c1d6da491",
+    "name": "IQ",
+    "code": "IQ",
+    "discoveryDisplayName": "IQ",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "cd5aa73a-97b8-4a57-959d-5d0053f6af36",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

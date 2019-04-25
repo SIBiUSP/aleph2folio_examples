@@ -1,0 +1,15 @@
+{
+    "id": "390df38a-8266-4a24-af4c-571ec563c3da",
+    "name": "MAE",
+    "code": "MAE",
+    "discoveryDisplayName": "MAE",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "b711ecc6-6b23-498e-b3d0-8b3ced682a28",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}

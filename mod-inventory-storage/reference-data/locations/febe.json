@@ -1,0 +1,15 @@
+{
+    "id": "9f89d432-55d7-49d8-b8ab-46c568866bd0",
+    "name": "FEBE",
+    "code": "FEBE",
+    "discoveryDisplayName": "FEBE",
+    "isActive": true,
+    "institutionId": "831d22d9-7349-4cbb-81c6-e8e0af696540",
+    "campusId": "0f047580-1c43-4204-a6a4-26cf8db85086",
+    "libraryId": "446842f8-a286-4ba2-bd7b-f40de90058ea",
+    "details": {},
+    "primaryServicePoint": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "servicePointIds": [
+        "3a40852d-49fd-4df2-a1f9-6e2641a6e91f"
+    ]
+}
