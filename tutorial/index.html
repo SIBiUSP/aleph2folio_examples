@@ -33,11 +33,25 @@
 					</p>
 				</section>
 				<section>
-						<h2>Code in github: <a href="https://github.com/SIBiUSP/aleph2folio_examples">aleph2folio</a></h2>
-						<p>Objetive is convert data gerated in Aleph to Folio</p>
-					</section>								
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+					<h2>Code in github: <a href="https://github.com/SIBiUSP/aleph2folio_examples">aleph2folio</a></h2>
+					<p>Objetive is convert Aleph data Aleph and import in Folio</p>
+				</section>								
+				<section>
+					<h2>Dependencies</h2>
+					<p><a href="http://librecat.org/">Catmandu</a></p>
+				</section>
+				<section>
+					<h2>
+						This script do:
+					</h2>
+					<p>Foreach record in MARC:</p> 
+					<ul>
+						<li>convert to FOLIO Codex (using custom Fixes) and create an instance on FOLIO;</li>
+						<li>convert source to MARC-In-JSON and import to source on instance;</li>
+						<li>foreach Library in items, create an Holding and import their items.</li>
+					</ul>	
+					<small>This script use CATMANDU that permit to use it with others input formats like MARCXML, ISO2709.</small>
+				</section>
 			</div>
 		</div>
 
